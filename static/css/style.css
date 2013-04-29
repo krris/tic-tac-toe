@@ -1,0 +1,52 @@
+/* Tic Tac Toe grid table */
+#game_grid {
+  table-layout: fixed;
+  border-spacing:0;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+#game_grid tr:first-child td {
+  border-top: 0;
+}
+#game_grid tr:last-child td {
+  border-bottom: 0;
+}
+#game_grid tr td:first-child,
+#game_grid tr th:first-child {
+  border-left: 0;
+}
+#game_grid tr td:last-child,
+#game_grid tr th:last-child {
+  border-right: 0;
+}
+
+.grid {
+  font-size: 14px;
+  font-family: Arial,Helvetica,sans-serif;
+  font-weight: bold;
+  padding: 0px 0px 0px 0px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #534ED9;
+  text-align: center;
+}
+
+.grid:hover {
+  color: #14396A;
+  background: #468CCF;
+  background: linear-gradient(top,  #468CCF,  #63B8EE);
+  background: -ms-linear-gradient(top,  #468CCF,  #63B8EE);
+  background: -webkit-gradient(linear, left top, left bottom, from(#468CCF), to(#63B8EE));
+  background: -moz-linear-gradient(top,  #468CCF,  #63B8EE);
+}
+
+/* Play again box */
+#play_again {
+	display: none;
+}
+#again_yes, #again_no {
+	cursor: hand;
+	cursor: pointer;
+	font-size: 15px;
+}

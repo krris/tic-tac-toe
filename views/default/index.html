@@ -1,0 +1,124 @@
+{{extend 'layout.html'}}
+
+<table width="{{=grid_size*25}}" height="{{=grid_size*25}}" id="game_grid">
+    {{for i in range(grid_size):}}
+    <tr>
+        {{for j in range(grid_size):}}
+        <td name="grid_{{=i}}_{{=j}}" class="grid">{{=grid[i][j]}}</td>
+        {{pass}}
+    </tr>
+    {{pass}}
+</table>
+<br />
+
+<div id="play_again">
+    	<h1 id="result"></h1><br />
+    	<h3>Chcesz zagrać jeszcze raz?</h3><br />
+    	<label id="again_yes">Tak</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label id="again_no">Nie</label>
+</div>
+
+<script>
+    $("#game_grid td.grid").click(function() {
+        var $input = $(this);
+        
+        // If user trying to access occupied spot exit this function
+        if($input.text() != '')
+            return;
+        else // Put mark so the user won't wait for it
+            $input.text('{{=player_mark}}');
+            
+        var splited = $input.attr('name').split('_');
+        
+        $.ajax({
+            type: "POST",
+            url: "{{=url_move}}",
+            data: {i: splited[1], j: splited[2]},
+            beforeSend: function() {
+                // Show load screen
+                $.blockUI({ 
+                    message: 'Trwa obliczanie ruchu komputera...',
+                    fadeIn: 500,
+                    css: { 
+                        border: 'none', 
+                        padding: '15px', 
+                        backgroundColor: '#000', 
+                        '-webkit-border-radius': '10px', 
+                        '-moz-border-radius': '10px', 
+                        opacity: .5, 
+                        color: '#fff' 
+                    } 
+                });
+            }
+            }).done(function ( out_data ) {
+                //If we got error in python reverse spot change and exit function
+                if(out_data === 'False') {
+                    $input.text('');
+                    return;
+                }
+                
+                out_data = $.parseJSON(out_data);
+                
+                if(out_data.status != 'player_won') {
+                    // Place AI mark
+                    $('[name="grid_'+out_data.x+'_'+out_data.y+'"]').text('{{=ai_mark}}'); 
+                }
+                
+                
+                if(out_data.status != 'none') { // Game finished
+                    switch(out_data.status)
+                    {
+                        case 'player_won':
+                            var msg = 'Wygrał gracz'
+                            break;
+                        case 'ai_won':
+                            var msg = 'Wygrał komputer'
+                            break;
+                        case 'draw':
+                            var msg = 'Remis'
+                            break;
+                    }
+                    // Disable clicking on grid
+                    $("#game_grid td.grid").off('click');
+                    // Load result into div
+                    $("#result").text(msg);
+                    // Display "play again" message
+                    $.blockUI({ 
+                        message: $('#play_again'), 
+                        css: { 
+                            cursor: 'default',
+                            border: 'none', 
+                            padding: '15px', 
+                            backgroundColor: '#000', 
+                            '-webkit-border-radius': '10px', 
+                            '-moz-border-radius': '10px',
+                            opacity: .95,  
+                            color: '#fff' 
+                        },
+                        overlayCSS: {
+                            cursor: 'default',
+                        } 
+                    });    
+                } else {
+                    // Hide loading screen
+                    $.unblockUI();
+                }
+                    
+            });
+    });
+
+    $("#again_yes").click(function(){
+        window.location.replace('{{=url_reset}}');
+    });
+    
+    $("#again_no").click(function(){
+       $.unblockUI();
+    });
+    
+    $('html,body').animate({ scrollTop: $('#menu').offset().top }, 2000);
+
+    if('{{=game_finished}}' == 'True') {
+        $("#game_grid td.grid").off('click');
+    }  
+</script>
