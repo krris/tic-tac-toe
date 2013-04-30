@@ -62,24 +62,25 @@ def move():
     
     grid[i][j] = settings.player_mark
     moves.remove((i, j))
+    session.game_finished = True
+    [x, y] = [-1, -1] # Default values in case AI will not make move
     
-    if check_win(grid, [i, j], settings.player_mark):
-        session.game_grid = grid
-        session.game_finished = True
-        return json.dumps({'status':'player_won'});
-
-    [x, y] = ai_move(grid, moves)
-    grid[x][y] = settings.ai_mark
-    #moves.remove((x, y))
-    
-    if check_win(grid, [x, y], settings.ai_mark):
-        status = 'ai_won'
-        session.game_finished = True
+    if check_win(grid, [i, j], settings.player_mark):        
+        status = 'player_won'
     elif check_draw(grid):
         status = 'draw'
-        session.game_finished = True
     else:
-        status = 'none'
+        # Make AI move
+        [x, y] = ai_move(grid)
+        grid[x][y] = settings.ai_mark
+        
+        if check_win(grid, [x, y], settings.ai_mark):
+            status = 'ai_won'
+        elif check_draw(grid):
+            status = 'draw'
+        else:
+            status = 'none'
+            session.game_finished = False # We keep on playing
         
     session.game_grid = grid
     session.moves = moves

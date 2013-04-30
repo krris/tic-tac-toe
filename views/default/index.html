@@ -60,7 +60,7 @@
                 
                 out_data = $.parseJSON(out_data);
                 
-                if(out_data.status != 'player_won') {
+                if(out_data.x != -1 && out_data.y != -1) {
                     // Place AI mark
                     $('[name="grid_'+out_data.x+'_'+out_data.y+'"]').text('{{=ai_mark}}'); 
                 }
