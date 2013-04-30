@@ -17,6 +17,7 @@ settings.email_login = ''
 settings.login_method = 'local'
 settings.login_config = ''
 settings.plugins = ['jqgrid']
-settings.grid_size = 30
+settings.grid_size = 3
 settings.player_mark = 'X'
 settings.ai_mark = 'O'
+

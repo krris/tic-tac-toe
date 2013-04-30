@@ -6,6 +6,7 @@ uploads/*
 *.py[oc]
 
 
+*.swp
 *.pyc
 *.pyo
 *~
