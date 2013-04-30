@@ -11,7 +11,8 @@ def check_win(grid, movement, sign):
             while move[0]>=0 and move[1]>=0 and move[0]<len(grid) and move[1]<len(grid[0]) and grid[move[0]][move[1]] == sign:
                 hit += 1
                 move = map(add, move, d)
-            if hit >= 5:
+            # if hit >= 5:
+            if hit >= 3:
                 return True
             d[:] = [x*(-1) for x in d]
     return False
