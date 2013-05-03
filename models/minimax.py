@@ -1,4 +1,4 @@
-from utils import *
+# from utils import *
 # State contains:
 # grid, moves, player_to_move, utility 
 
@@ -85,7 +85,8 @@ def terminal_test(state):
 
 def utility(state, player):
     "Return the value to player: 1 for win, -1 for loss, 0 otherwise."
-    return if_(player == settings.ai_mark, state.utility, -state.utility)
+    #return if_(player == settings.ai_mark, state.utility, -state.utility)
+    return state.utility if player == settings.ai_mark else -state.utility
 
 def actions(state):
     "Return a list of the allowable moves at current state."
@@ -101,8 +102,8 @@ def result(state, move):
 
     moves = list(state.moves)
     moves.remove(move)
-    return Struct(player_to_move=if_(state.player_to_move == settings.ai_mark,
-                                     settings.player_mark, settings.ai_mark),
+    return Struct(player_to_move=settings.player_mark if 
+                  state.player_to_move == settings.ai_mark else settings.ai_mark,
                   utility=compute_utility(grid, move, state.player_to_move),
                   grid=grid,
                   moves=moves)
@@ -113,7 +114,8 @@ def compute_utility(grid, move, player):
         k_in_row(grid, move, player, (1, 0)) or
         k_in_row(grid, move, player, (1, -1)) or
         k_in_row(grid, move, player, (1, 1))):
-        return if_(player == settings.ai_mark, +1, -1)
+#        return if_(player == settings.ai_mark, +1, -1)
+        return +1 if player == settings.ai_mark else -1
     else:
         return 0
 
