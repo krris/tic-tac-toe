@@ -1,4 +1,3 @@
-# from utils import *
 # State contains:
 # grid, moves, player_to_move, utility 
 
@@ -36,8 +35,8 @@ def minimax_decision(state):
         return v
 
     # Body of minimax_decision:
-    return argmax(actions(state),
-                  lambda a: min_value(result(state, a)))
+    return max(actions(state),
+                  key=lambda a: min_value(result(state, a)))
 
 def alphabeta_search(state, d=4, cutoff_test=None, eval_fn=None):
     """Search game to determine best action; use alpha-beta pruning.
@@ -74,8 +73,8 @@ def alphabeta_search(state, d=4, cutoff_test=None, eval_fn=None):
     cutoff_test = (cutoff_test or
                    (lambda state,depth: depth>d or terminal_test(state)))
     eval_fn = eval_fn or (lambda state: utility(state, player))
-    return argmax(actions(state),
-                  lambda a: min_value(result(state, a),
+    return max(actions(state),
+                  key=lambda a: min_value(result(state, a),
                                       -infinity, infinity, 0))
 
 
