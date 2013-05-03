@@ -67,6 +67,13 @@ def move():
     else:
         # Make AI move
         state = Struct(grid=copy.deepcopy(grid), moves=moves, player_to_move=settings.ai_mark, utility=0)
+
+        # Tests:
+        v_ai = count_vertical_k_lenghts(state, settings.ai_mark)
+        v_pl = count_vertical_k_lenghts(state, settings.player_mark)
+        h_ai = count_horizontal_k_lenghts(state, settings.ai_mark)
+        h_pl = count_horizontal_k_lenghts(state, settings.player_mark)
+
         # [x, y] = ai_random(state)
         (state_after_move, move) = ai_minimax_move(state)
         [x, y] = move

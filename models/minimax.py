@@ -2,8 +2,8 @@
 # grid, moves, player_to_move, utility 
 
 def ai_minimax_move(state):
-    move = minimax_decision(state)
-   # move = alphabeta_search(state)
+   # move = minimax_decision(state)
+    move = alphabeta_search(state, eval_fn=evaluation)
     return (result(state, move), move)
 
 def ai_random(state):
@@ -76,6 +76,55 @@ def alphabeta_search(state, d=4, cutoff_test=None, eval_fn=None):
     return max(actions(state),
                   key=lambda a: min_value(result(state, a),
                                       -infinity, infinity, 0))
+# k = marks_to_win
+# f(n) = [number of k-lengths open for player 1] -
+#        [number of k-lengths open for player 2]
+# where a k-length is a complete row, column, or diagonal.
+def evaluation(state):
+    player = state.player_to_move
+    player_evaluation = count_vertical_k_lenghts(state, player) + count_horizontal_k_lenghts(state, player)
+    opponent_evaluation = count_vertical_k_lenghts(state, opponent(player)) + count_horizontal_k_lenghts(state, opponent(player))
+    return player_evaluation - opponent_evaluation
+
+def count_vertical_k_lenghts(state, player):
+    width = settings.grid_size
+    height = settings.grid_size
+    counter = 0
+    grid = state.grid
+    marks_to_win = settings.marks_to_win
+    for x in range(width):
+        for y in range(height - marks_to_win + 1):
+            n = 0
+            for i in range(marks_to_win):
+                if (grid[i][x] == '' or 
+                    grid[i][x] == player):
+                    n += 1
+            if n == marks_to_win:
+                counter += 1
+    return counter
+
+def count_horizontal_k_lenghts(state, player):
+    width = settings.grid_size
+    height = settings.grid_size
+    counter = 0
+    grid = state.grid
+    marks_to_win = settings.marks_to_win
+    for y in range(height):
+        for x in range(width - marks_to_win + 1):
+            n = 0
+            for i in range(marks_to_win):
+                if (grid[y][i] == '' or 
+                    grid[y][i] == player):
+                    n += 1
+            if n == marks_to_win:
+                counter += 1
+    return counter
+
+def opponent(player):
+    if player == settings.ai_mark:
+        return settings.player_mark
+    else:
+        return settings.ai_mark
 
 
 def terminal_test(state):
