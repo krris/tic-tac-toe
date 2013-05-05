@@ -1,19 +1,11 @@
+# -*- coding: utf-8 -*-
+
 # State contains:
 # grid, moves, player_to_move, utility 
 
 def ai_minimax_move(state):
-   # move = minimax_decision(state)
     move = alphabeta_search(state, eval_fn=evaluation)
     return (result(state, move), move)
-
-def ai_random(state):
-    x = random.randint(0,settings.grid_size-1)
-    y = random.randint(0,settings.grid_size-1)
-    while(state.grid[x][y]!=''):
-        x = random.randint(0,settings.grid_size-1)
-        y = random.randint(0,settings.grid_size-1)
-    return [x, y]
-
 
 def minimax_decision(state):
     player = state.player_to_move
@@ -76,11 +68,13 @@ def alphabeta_search(state, d=4, cutoff_test=None, eval_fn=None):
     return max(actions(state),
                   key=lambda a: min_value(result(state, a),
                                       -infinity, infinity, 0))
-# k = marks_to_win
-# f(n) = [number of k-lengths open for player 1] -
-#        [number of k-lengths open for player 2]
-# where a k-length is a complete row, column, or diagonal.
 def evaluation(state):
+    """Return the value of the evaluation funciton:
+    f(n) = [number of k-lengths open for player 1] -
+           [number of k-lengths open for player 2]
+    where a k-length is a complete row or column and k is
+    a number of marks required to win.
+    """
     player = state.player_to_move
     player_evaluation = count_vertical_k_lenghts(state, player) + count_horizontal_k_lenghts(state, player)
     opponent_evaluation = count_vertical_k_lenghts(state, opponent(player)) + count_horizontal_k_lenghts(state, opponent(player))
@@ -133,7 +127,6 @@ def terminal_test(state):
 
 def utility(state, player):
     "Return the value to player: 1 for win, -1 for loss, 0 otherwise."
-    #return if_(player == settings.ai_mark, state.utility, -state.utility)
     return state.utility if player == settings.ai_mark else -state.utility
 
 def actions(state):
@@ -162,7 +155,6 @@ def compute_utility(grid, move, player):
         k_in_row(grid, move, player, (1, 0)) or
         k_in_row(grid, move, player, (1, -1)) or
         k_in_row(grid, move, player, (1, 1))):
-#        return if_(player == settings.ai_mark, +1, -1)
         return +1 if player == settings.ai_mark else -1
     else:
         return 0
