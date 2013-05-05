@@ -52,7 +52,6 @@ def move():
     
     if(i >= settings.grid_size or j >= settings.grid_size or i < 0 or j < 0 or grid[i][j] != ''):
         return False
-    
                   
     grid[i][j] = settings.player_mark
     # remove player move from available moves
@@ -67,6 +66,10 @@ def move():
     else:
         # Make AI move
         state = Struct(grid=copy.deepcopy(grid), moves=moves, player_to_move=settings.ai_mark, utility=0)
+
+        temp = count_diagonal_k_lenghts(state, settings.ai_mark)
+        temp = count_diagonal_k_lenghts(state, settings.player_mark)
+
 
         (state_after_move, move) = ai_minimax_move(state)
         [x, y] = move

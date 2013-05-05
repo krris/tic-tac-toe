@@ -72,12 +72,17 @@ def evaluation(state):
     """Return the value of the evaluation funciton:
     f(n) = [number of k-lengths open for player 1] -
            [number of k-lengths open for player 2]
-    where a k-length is a complete row or column and k is
+    where a k-length is a complete row, column or diagonal and k is
     a number of marks required to win.
     """
     player = state.player_to_move
-    player_evaluation = count_vertical_k_lenghts(state, player) + count_horizontal_k_lenghts(state, player)
-    opponent_evaluation = count_vertical_k_lenghts(state, opponent(player)) + count_horizontal_k_lenghts(state, opponent(player))
+    player_evaluation = ( count_vertical_k_lenghts(state, player) +
+                        count_horizontal_k_lenghts(state, player) + 
+                        count_diagonal_k_lenghts(state,player) )
+    opponent_evaluation = (count_vertical_k_lenghts(state, opponent(player)) + 
+                          count_horizontal_k_lenghts(state, opponent(player)) + 
+                          count_diagonal_k_lenghts(state, opponent(player)) )
+
     return player_evaluation - opponent_evaluation
 
 def count_vertical_k_lenghts(state, player):
@@ -113,6 +118,35 @@ def count_horizontal_k_lenghts(state, player):
             if n == marks_to_win:
                 counter += 1
     return counter
+
+
+def count_diagonal_k_lenghts(state, player):
+    width = settings.grid_size
+    height = settings.grid_size
+    counter = 0
+    grid = state.grid
+    marks_to_win = settings.marks_to_win
+    for x in range(width - marks_to_win + 1):
+        for y in range(height - marks_to_win + 1):
+            n = 0
+            for i in range(marks_to_win):
+                if (grid[y + i][x + i] == '' or 
+                    grid[y + i][x + i] == player):
+                    n += 1
+            if n == marks_to_win:
+                counter += 1
+
+    for x in range(width - 1, width - marks_to_win, -1):
+        for y in range(height - marks_to_win + 1):
+            n = 0
+            for i in range(marks_to_win):
+                if (grid[y + i][x - i] == '' or 
+                    grid[y + i][x - i] == player):
+                    n += 1
+            if n == marks_to_win:
+                counter += 1
+    return counter
+
 
 def opponent(player):
     if player == settings.ai_mark:
