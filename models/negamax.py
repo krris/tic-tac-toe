@@ -4,31 +4,41 @@ import copy
 def enum(**enums):
     return type('Enum', (), enums)
 
-max_depth = 6
+max_depth = 3
 sign = enum(HUMAN=1, AI=-1)
 
 def negamax(grid, depth, player):
-    if (game_over(grid) or depth > max_depth):
+    if (game_over(grid, player) or depth > max_depth):
         if player == settings.player_mark:
             return sign.HUMAN * evaluate(grid)
         elif player == settings.ai_mark:
             return sign.AI * evaluate(grid)
 
-    max = - float('Inf')
+    maximum = - float('Inf')
     for move in moves(grid):
         grid_copy = copy.deepcopy(grid)
         make_move(grid_copy, move, player)
         x = - negamax(grid_copy, depth+1, opponent(player))
-        if x > max:
-            max = x
-    return max
+        if x > maximum:
+            maximum = x
+    return maximum
 
 
-def game_over(grid):
-    pass
+def game_over(grid, player):
+    if (column_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player) or
+        row_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player) or
+        diagonal_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player)):
+        return True
+    else:
+        return False
 
 def evaluate(grid):
-    pass
+    if game_over(grid, settings.player_mark):
+        return +5
+    elif game_over(grid, settings.ai_mark):
+        return -5
+    else:
+        return 0
 
 def moves(grid):
     moves = []
@@ -41,6 +51,102 @@ def moves(grid):
 def make_move(grid, move, player):
     (x, y) = move
     grid[x][y] = player
+
+def opponent(player):
+    if player == settings.player_mark:
+        return settings.ai_mark
+    else:
+        return settings.player_mark
+
+def column_wins(grid, width, height, marks_to_win, player):
+    for x in range(width):
+        for y in range(height - marks_to_win + 1):
+            counter = 0
+            for i in range(marks_to_win):
+                if grid[y+i][x] == player:
+                    counter += 1
+                if counter == marks_to_win:
+                    return True
+    return False
+
+def row_wins(grid, width, height, marks_to_win, player):
+    for y in range(height):
+        for x in range(width - marks_to_win + 1):
+            counter = 0
+            for i in range(marks_to_win):
+                if grid[y][x+i] == player:
+                    counter += 1
+                if counter == marks_to_win:
+                    return True
+    return False
+
+def diagonal_wins(grid, width, height, marks_to_win, player):
+    for x in range(width - marks_to_win + 1):
+        for y in range(height - marks_to_win + 1):
+            counter = 0
+            for i in range(marks_to_win):
+                if grid[y+i][x+i] == player:
+                    counter += 1
+                if counter == marks_to_win:
+                    return True
+
+    for x in range(width - 1, width - marks_to_win, -1):
+        for y in range(height - marks_to_win + 1):
+            counter = 0
+            for i in range(marks_to_win):
+                if grid[y+i][x-i] == player:
+                    counter += 1
+                if counter == marks_to_win:
+                    return True
+
+    return False
+
+def count_column(grid, width, height, marks_to_win, player):
+    counter = 0
+    for x in range(width):
+        for y in range(height - marks_to_win + 1):
+            n = 0
+            for i in range(marks_to_win):
+                if (grid[y+i][x] == player or
+                   grid[y+i][x] == ''):
+                    n += 1
+                if n == marks_to_win:
+                    counter += 1
+    return counter
+
+def count_row(grid, width, height, marks_to_win, player):
+    for y in range(height):
+        for x in range(width - marks_to_win + 1):
+            counter = 0
+            for i in range(marks_to_win):
+                if grid[y][x+i] == player:
+                    counter += 1
+                if counter == marks_to_win:
+                    return True
+    return False
+
+#def count_diagonal(width, height, marks_to_win, player):
+#    for x in range(width - marks_to_win + 1):
+#        for y in range(height - marks_to_win + 1):
+#            counter = 0
+#            for i in range(marks_to_win):
+#                if grid[y+i][x+i] == player:
+#                    counter += 1
+#                if counter == marks_to_win:
+#                    return True
+#
+#    for x in range(width - 1, width - marks_to_win, -1):
+#        for y in range(height - marks_to_win + 1):
+#            counter = 0
+#            for i in range(marks_to_win):
+#                if grid[y+i][x-i] == player:
+#                    counter += 1
+#                if counter == marks_to_win:
+#                    return True
+#
+#    return False
+
+
 
 def winning_columns(width, height, marks_to_win):
     columns = []

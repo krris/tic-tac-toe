@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import random
+import copy
 #import game
 from minimax import ai_minimax_move
 
@@ -71,6 +72,8 @@ def move():
         status = 'draw'
     else:
         # Make AI move
+        temp = negamax(copy.deepcopy(grid), 0, settings.ai_mark)
+
         [x, y] = ai_move(grid)
         grid[x][y] = settings.ai_mark
         
@@ -87,7 +90,7 @@ def move():
     return json.dumps({'x':x, 'y':y, 'status':status})     
    
 
-def ai_move(grid, moves):
+def ai_move(grid):
     x = random.randint(0,settings.grid_size-1)
     y = random.randint(0,settings.grid_size-1)
     while(grid[x][y]!=''):
