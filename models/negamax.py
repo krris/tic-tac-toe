@@ -31,7 +31,70 @@ def evaluate(grid):
     pass
 
 def moves(grid):
-    pass
+    moves = []
+    for x in range(settings.grid_size):
+        for y in range(settings.grid_size):
+            if grid[x][y] == '':
+                moves.append( (x, y) )
+    return moves
 
 def make_move(grid, move, player):
-    pass
+    (x, y) = move
+    grid[x][y] = player
+
+def winning_columns(width, height, marks_to_win):
+    columns = []
+    for x in range(width):
+        for y in range(height - marks_to_win + 1):
+            col = [] 
+            for i in range(marks_to_win):
+                col.append( (x, y + i) )
+            columns.append(col)
+    return columns
+
+def winning_rows(width, height, marks_to_win):
+    rows = []
+    for y in range(height):
+        for x in range(width - marks_to_win + 1):
+            row = [] 
+            for i in range(marks_to_win):
+                row.append( (x + i, y) )
+            rows.append(row)
+    return rows
+
+def winning_diagonals(width, height, marks_to_win):
+    diagonals = []
+    for x in range(width - marks_to_win + 1):
+        for y in range(height - marks_to_win + 1):
+            diag = [] 
+            for i in range(marks_to_win):
+                diag.append( (x + i, y + i) )
+            diagonals.append(diag)
+
+    for x in range(width - 1, width - marks_to_win, -1):
+        for y in range(height - marks_to_win + 1):
+            diag = [] 
+            for i in range(marks_to_win):
+                diag.append( (x - i, y + i) )
+            diagonals.append(diag)
+
+    return diagonals
+
+    
+
+
+temp = winning_rows(3,3,3)
+temp = winning_rows(4,4,3)
+temp = winning_diagonals(3,3,3)
+temp = winning_diagonals(4,4,3)
+
+
+
+
+
+
+
+
+
+
+
