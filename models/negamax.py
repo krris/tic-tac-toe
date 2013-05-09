@@ -10,6 +10,7 @@ class State:
         self.player_to_move = player_to_move
         self.last_move = last_move
         self.utility = utility
+
     def copy(self):
         return copy.deepcopy(self)
 
@@ -25,7 +26,6 @@ def negamax(state, alpha, beta, depth=0):
                     evaluation)
 
     maximum = State(utility = (- float('Inf')))
-    #maximum = State(None, None, None, - float('Inf'))
     for move in moves(grid):
         grid_copy = copy.deepcopy(grid)
         make_move(grid_copy, move, player)
@@ -40,9 +40,6 @@ def negamax(state, alpha, beta, depth=0):
         new_beta = beta.copy()
         new_beta.utility = (- beta.utility)
 
-#        result = negamax(new_state, new_beta, new_alpha, depth=depth+1)
-#        x = result
-#        x.utility = - result.utility
         x = negamax(new_state, new_beta, new_alpha, depth=depth+1)
         x.utility = (- x.utility)
         if x.utility > maximum.utility:
@@ -60,24 +57,20 @@ def terminalState(state):
     player = state.player_to_move
     if (winner(grid, player) or 
         winner(grid, opponent(player)) or 
-        draw(grid)):
+        GameStatus().draw(grid)):
         return True
     return False
 
 def winner(grid, player):
-    if (column_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player) or
-        row_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player) or
-        diagonal_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player)):
+    status = GameStatus()
+    if (status.column_wins(grid, player) or
+        status.row_wins(grid, player) or
+        status.diagonal_wins(grid, player)):
         return True
     else:
         return False
 
-def draw(grid):
-    for x in range(settings.grid_size):
-        for y in range(settings.grid_size):
-            if grid[y][x] == '':
-                return False
-    return True
+
 
 def evaluate(grid, player):
     isXWon = winner(grid, settings.player_mark)
@@ -115,70 +108,59 @@ def elem(grid, x, y, default=None):
         return grid[y][x]
 
 
-def column_wins(grid, width, height, marks_to_win, player):
-    for x in range(width):
-        for y in range(height - marks_to_win + 1):
-            counter = 0
-            for i in range(marks_to_win):
-                if elem(grid, x, y+i) == player:
-                    counter += 1
-                if counter == marks_to_win:
-                    return True
-    return False
+class GameStatus:
+    def __init__(self):
+        self.width = settings.grid_size
+        self.height = settings.grid_size
+        self.marks_to_win = settings.marks_to_win
 
-def row_wins(grid, width, height, marks_to_win, player):
-    for y in range(height):
-        for x in range(width - marks_to_win + 1):
-            counter = 0
-            for i in range(marks_to_win):
-                if elem(grid,x+i,y) == player:
-                    counter += 1
-                if counter == marks_to_win:
-                    return True
-    return False
+    def draw(self, grid):
+        for x in range(settings.grid_size):
+            for y in range(settings.grid_size):
+                if grid[y][x] == '':
+                    return False
+        return True
 
-def diagonal_wins(grid, width, height, marks_to_win, player):
-    for x in range(width - marks_to_win + 1):
-        for y in range(height - marks_to_win + 1):
-            counter = 0
-            for i in range(marks_to_win):
-                if elem(grid,x+i,y+i) == player:
-                    counter += 1
-                if counter == marks_to_win:
-                    return True
-
-    for x in range(width - 1, width - marks_to_win, -1):
-        for y in range(height - marks_to_win + 1):
-            counter = 0
-            for i in range(marks_to_win):
-                if elem(grid,x-i,y+i) == player:
-                    counter += 1
-                if counter == marks_to_win:
-                    return True
-
-    return False
-
-def count_column(grid, width, height, marks_to_win, player):
-    counter = 0
-    for x in range(width):
-        for y in range(height - marks_to_win + 1):
-            n = 0
-            for i in range(marks_to_win):
-                if (elem(grid,x,y+i) == player or
-                   elem(grid,x,y+i) == ''):
-                    n += 1
-                if n == marks_to_win:
-                    counter += 1
-    return counter
-
-def count_row(grid, width, height, marks_to_win, player):
-    for y in range(height):
-        for x in range(width - marks_to_win + 1):
-            counter = 0
-            for i in range(marks_to_win):
-                if elem(grid,x+i,y) == player:
-                    counter += 1
-                if counter == marks_to_win:
-                    return True
-    return False
-
+    def column_wins(self, grid, player):
+        for x in range(self.width):
+            for y in range(self.height - self.marks_to_win + 1):
+                counter = 0
+                for i in range(self.marks_to_win):
+                    if elem(grid, x, y+i) == player:
+                        counter += 1
+                    if counter == self.marks_to_win:
+                        return True
+        return False
+    
+    def row_wins(self, grid, player):
+        for y in range(self.height):
+            for x in range(self.width - self.marks_to_win + 1):
+                counter = 0
+                for i in range(self.marks_to_win):
+                    if elem(grid,x+i,y) == player:
+                        counter += 1
+                    if counter == self.marks_to_win:
+                        return True
+        return False
+    
+    def diagonal_wins(self, grid, player):
+        for x in range(self.width - self.marks_to_win + 1):
+            for y in range(self.height - self.marks_to_win + 1):
+                counter = 0
+                for i in range(self.marks_to_win):
+                    if elem(grid,x+i,y+i) == player:
+                        counter += 1
+                    if counter == self.marks_to_win:
+                        return True
+    
+        for x in range(self.width - 1, self.width - self.marks_to_win, -1):
+            for y in range(self.height - self.marks_to_win + 1):
+                counter = 0
+                for i in range(self.marks_to_win):
+                    if elem(grid,x-i,y+i) == player:
+                        counter += 1
+                    if counter == self.marks_to_win:
+                        return True
+    
+        return False
+    
