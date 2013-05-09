@@ -4,7 +4,8 @@ import copy
 max_depth = 9
 
 class State:
-    def __init__(self, grid, player_to_move, last_move, utility):
+    def __init__(self, grid=None, player_to_move=None, 
+                last_move=None, utility=None):
         self.grid = grid
         self.player_to_move = player_to_move
         self.last_move = last_move
@@ -23,18 +24,27 @@ def negamax(state, alpha, beta, depth=0):
                     move if state.last_move == None else state.last_move, 
                     evaluation)
 
-    maximum = State(None, None, None, - float('Inf'))
+    maximum = State(utility = (- float('Inf')))
+    #maximum = State(None, None, None, - float('Inf'))
     for move in moves(grid):
         grid_copy = copy.deepcopy(grid)
         make_move(grid_copy, move, player)
-        new_state = State(grid_copy, opponent(player), move if state.last_move == None else state.last_move, 0)
+        new_state = State(grid_copy, 
+                          opponent(player), 
+                          move if state.last_move == None else state.last_move, 
+                          0)
 
-        new_alpha = State(alpha.grid, alpha.player_to_move, alpha.last_move, - alpha.utility)
-        new_beta = State(beta.grid, beta.player_to_move, beta.last_move, - beta.utility)
+        new_alpha = alpha.copy()
+        new_alpha.utility = (- alpha.utility)
 
-        result = negamax(new_state, new_beta, new_alpha, depth=depth+1)
-        x = result
-        x.utility = - result.utility
+        new_beta = beta.copy()
+        new_beta.utility = (- beta.utility)
+
+#        result = negamax(new_state, new_beta, new_alpha, depth=depth+1)
+#        x = result
+#        x.utility = - result.utility
+        x = negamax(new_state, new_beta, new_alpha, depth=depth+1)
+        x.utility = (- x.utility)
         if x.utility > maximum.utility:
             maximum = x
 
