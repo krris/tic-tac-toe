@@ -67,7 +67,7 @@ def winner(grid, player):
 def draw(grid):
     for x in range(settings.grid_size):
         for y in range(settings.grid_size):
-            if grid[x][y] == '':
+            if grid[y][x] == '':
                 return False
     return True
 
@@ -92,13 +92,13 @@ def moves(grid):
     moves = []
     for x in range(settings.grid_size):
         for y in range(settings.grid_size):
-            if grid[x][y] == '':
-                moves.append( (x, y) )
+            if grid[y][x] == '':
+                moves.append( (y, x) )
     return moves
 
 def make_move(grid, move, player):
-    (x, y) = move
-    grid[x][y] = player
+    (y, x) = move
+    grid[y][x] = player
 
 def opponent(player):
     if player == settings.player_mark:
@@ -118,7 +118,7 @@ def column_wins(grid, width, height, marks_to_win, player):
         for y in range(height - marks_to_win + 1):
             counter = 0
             for i in range(marks_to_win):
-                if grid[y+i][x] == player:
+                if elem(grid, x, y+i) == player:
                     counter += 1
                 if counter == marks_to_win:
                     return True
@@ -129,7 +129,7 @@ def row_wins(grid, width, height, marks_to_win, player):
         for x in range(width - marks_to_win + 1):
             counter = 0
             for i in range(marks_to_win):
-                if grid[y][x+i] == player:
+                if elem(grid,x+i,y) == player:
                     counter += 1
                 if counter == marks_to_win:
                     return True
@@ -140,7 +140,7 @@ def diagonal_wins(grid, width, height, marks_to_win, player):
         for y in range(height - marks_to_win + 1):
             counter = 0
             for i in range(marks_to_win):
-                if grid[y+i][x+i] == player:
+                if elem(grid,x+i,y+i) == player:
                     counter += 1
                 if counter == marks_to_win:
                     return True
@@ -149,7 +149,7 @@ def diagonal_wins(grid, width, height, marks_to_win, player):
         for y in range(height - marks_to_win + 1):
             counter = 0
             for i in range(marks_to_win):
-                if grid[y+i][x-i] == player:
+                if elem(grid,x-i,y+i) == player:
                     counter += 1
                 if counter == marks_to_win:
                     return True
@@ -162,8 +162,8 @@ def count_column(grid, width, height, marks_to_win, player):
         for y in range(height - marks_to_win + 1):
             n = 0
             for i in range(marks_to_win):
-                if (grid[y+i][x] == player or
-                   grid[y+i][x] == ''):
+                if (elem(grid,x,y+i) == player or
+                   elem(grid,x,y+i) == ''):
                     n += 1
                 if n == marks_to_win:
                     counter += 1
@@ -174,7 +174,7 @@ def count_row(grid, width, height, marks_to_win, player):
         for x in range(width - marks_to_win + 1):
             counter = 0
             for i in range(marks_to_win):
-                if grid[y][x+i] == player:
+                if elem(grid,x+i,y) == player:
                     counter += 1
                 if counter == marks_to_win:
                     return True
@@ -203,53 +203,53 @@ def count_row(grid, width, height, marks_to_win, player):
 
 
 
-def winning_columns(width, height, marks_to_win):
-    columns = []
-    for x in range(width):
-        for y in range(height - marks_to_win + 1):
-            col = [] 
-            for i in range(marks_to_win):
-                col.append( (x, y + i) )
-            columns.append(col)
-    return columns
-
-def winning_rows(width, height, marks_to_win):
-    rows = []
-    for y in range(height):
-        for x in range(width - marks_to_win + 1):
-            row = [] 
-            for i in range(marks_to_win):
-                row.append( (x + i, y) )
-            rows.append(row)
-    return rows
-
-def winning_diagonals(width, height, marks_to_win):
-    diagonals = []
-    for x in range(width - marks_to_win + 1):
-        for y in range(height - marks_to_win + 1):
-            diag = [] 
-            for i in range(marks_to_win):
-                diag.append( (x + i, y + i) )
-            diagonals.append(diag)
-
-    for x in range(width - 1, width - marks_to_win, -1):
-        for y in range(height - marks_to_win + 1):
-            diag = [] 
-            for i in range(marks_to_win):
-                diag.append( (x - i, y + i) )
-            diagonals.append(diag)
-
-    return diagonals
-
-    
-
-
-
-
-
-
-
-
-
-
+#def winning_columns(width, height, marks_to_win):
+#    columns = []
+#    for x in range(width):
+#        for y in range(height - marks_to_win + 1):
+#            col = [] 
+#            for i in range(marks_to_win):
+#                col.append( (x, y + i) )
+#            columns.append(col)
+#    return columns
+#
+#def winning_rows(width, height, marks_to_win):
+#    rows = []
+#    for y in range(height):
+#        for x in range(width - marks_to_win + 1):
+#            row = [] 
+#            for i in range(marks_to_win):
+#                row.append( (x + i, y) )
+#            rows.append(row)
+#    return rows
+#
+#def winning_diagonals(width, height, marks_to_win):
+#    diagonals = []
+#    for x in range(width - marks_to_win + 1):
+#        for y in range(height - marks_to_win + 1):
+#            diag = [] 
+#            for i in range(marks_to_win):
+#                diag.append( (x + i, y + i) )
+#            diagonals.append(diag)
+#
+#    for x in range(width - 1, width - marks_to_win, -1):
+#        for y in range(height - marks_to_win + 1):
+#            diag = [] 
+#            for i in range(marks_to_win):
+#                diag.append( (x - i, y + i) )
+#            diagonals.append(diag)
+#
+#    return diagonals
+#
+#    
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
