@@ -1,5 +1,5 @@
 # coding: utf8
-import pdb
+#import pdb
 from operator import add
 
 def check_win(grid, movement, sign):

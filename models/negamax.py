@@ -14,33 +14,14 @@ class State:
         self.last_move = last_move
         self.utility = utility
 
-#def negamax(grid, depth, player):
 def negamax(state, depth=0):
     grid = state.grid
     player = state.player_to_move
-
-
 
     if (winner(grid, player) or winner(grid, opponent(player)) or draw(grid) or depth > max_depth):
         evaluation = evaluate(grid, player)
         return State(grid, opponent(player), move if state.last_move == None else state.last_move, evaluation)
 
-#    if (winner(grid, player) or depth > max_depth):
-#        if player == settings.player_mark:
-#            evaluation = sign.HUMAN * evaluate(grid)
-#        elif player == settings.ai_mark:
-#            evaluation = sign.AI * evaluate(grid)
-#        return State(grid, opponent(player), move if state.last_move == None else state.last_move, evaluation)
-#
-#    if winner(grid, opponent(player)):
-#        if opponent(player) == settings.player_mark:
-#            evaluation = sign.HUMAN * evaluate(grid)
-#        elif opponent(player) == settings.ai_mark:
-#            evaluation = sign.AI * evaluate(grid)
-#        return State(grid, opponent(player), move if state.last_move == None else state.last_move, evaluation)
-
-
-# utworzyc max state o wartosci ultility = infinity
     maximum = State(None, None, None, - float('Inf'))
     for move in moves(grid):
         grid_copy = copy.deepcopy(grid)
@@ -72,12 +53,6 @@ def draw(grid):
     return True
 
 def evaluate(grid, player):
-    #if winner(grid, settings.player_mark):
-    #    return +5
-    #elif winner(grid, settings.ai_mark):
-    #    return -5
-    #else:
-    #    return 0
     isXWon = winner(grid, settings.player_mark)
     isOWon = winner(grid, settings.ai_mark)
 

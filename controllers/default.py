@@ -75,35 +75,35 @@ def move():
         # Make AI move
         
         # tests
-        s = [['O', 'X', 'O'],['','X','O'],['','','X']]
-        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-        a = negamax(ss)
-        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-        a = negamax(ss)
-
-        s = [['O', '', ''],['','X',''],['X','O','']]
-        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-        a = negamax(ss)
-        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-        a = negamax(ss)
-
-        s = [['O', '', ''],['O','X','X'],['','','']]
-        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-        a = negamax(ss)
-        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-        a = negamax(ss)
-
-        s = [['X', 'X', ''],['','',''],['','','']]
-        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-        a = negamax(ss)
-        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-        a = negamax(ss)
-
-        s = [['', '', ''],['','X',''],['X','','']]
-        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-        a = negamax(ss)
-        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-        a = negamax(ss)
+#        s = [['O', 'X', 'O'],['','X','O'],['','','X']]
+#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+#        a = negamax(ss)
+#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+#        a = negamax(ss)
+#
+#        s = [['O', '', ''],['','X',''],['X','O','']]
+#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+#        a = negamax(ss)
+#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+#        a = negamax(ss)
+#
+#        s = [['O', '', ''],['O','X','X'],['','','']]
+#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+#        a = negamax(ss)
+#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+#        a = negamax(ss)
+#
+#        s = [['X', 'X', ''],['','',''],['','','']]
+#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+#        a = negamax(ss)
+#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+#        a = negamax(ss)
+#
+#        s = [['', '', ''],['','X',''],['X','','']]
+#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+#        a = negamax(ss)
+#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+#        a = negamax(ss)
 
         state = State(copy.deepcopy(grid), settings.ai_mark, None, 0)
         new_state = negamax(state)
