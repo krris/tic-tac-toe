@@ -70,8 +70,6 @@ def winner(grid, player):
     else:
         return False
 
-
-
 def evaluate(grid, player):
     isXWon = winner(grid, settings.player_mark)
     isOWon = winner(grid, settings.ai_mark)

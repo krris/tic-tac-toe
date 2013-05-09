@@ -2,7 +2,6 @@
 import json
 import random
 import copy
-#import game
 from minimax import ai_minimax_move
 
 ### required - do no delete
@@ -72,8 +71,8 @@ def move():
     else:
         # Make AI move
         state = State(copy.deepcopy(grid), settings.ai_mark, None, 0)
-        alpha = State(None, None, None, - float('Inf'))
-        beta = State(None, None, None, float('Inf'))
+        alpha = State(utility= - float('Inf'))
+        beta = State(utility= float('Inf'))
         new_state = negamax(state, alpha, beta)
 
         (x, y) = new_state.last_move
