@@ -18,7 +18,7 @@ def negamax(state, alpha, beta, depth=0):
     grid = state.grid
     player = state.player_to_move
 
-    if terminalState or depth > max_depth:
+    if terminalState(state) or depth > max_depth:
         evaluation = evaluate(grid, player)
         return State(grid, opponent(player), move if state.last_move == None else state.last_move, evaluation)
 
