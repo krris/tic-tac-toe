@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import copy
 
-max_depth = 9
-
 class State:
     def __init__(self, grid=None, player_to_move=None, 
                 last_move=None, utility=None):
@@ -17,6 +15,7 @@ class State:
 def negamax(state, alpha, beta, depth=0):
     grid = state.grid
     player = state.player_to_move
+    max_depth = settings.max_depth
 
     if terminalState(state) or depth > max_depth:
         evaluation = evaluate(grid, player)

@@ -19,5 +19,6 @@ settings.login_config = ''
 settings.plugins = ['jqgrid']
 settings.grid_size = 3
 settings.marks_to_win = 3
+settings.max_depth = 9
 settings.player_mark = 'X'
 settings.ai_mark = 'O'
