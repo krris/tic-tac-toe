@@ -7,24 +7,56 @@ def enum(**enums):
 max_depth = 3
 sign = enum(HUMAN=1, AI=-1)
 
-def negamax(grid, depth, player):
-    if (game_over(grid, player) or depth > max_depth):
-        if player == settings.player_mark:
-            return sign.HUMAN * evaluate(grid)
-        elif player == settings.ai_mark:
-            return sign.AI * evaluate(grid)
+class State:
+    def __init__(self, grid, player_to_move, last_move, utility):
+        self.grid = grid
+        self.player_to_move = player_to_move
+        self.last_move = last_move
+        self.utility = utility
 
-    maximum = - float('Inf')
+#def negamax(grid, depth, player):
+def negamax(state, depth=0):
+    grid = state.grid
+    player = state.player_to_move
+
+
+
+    if (winner(grid, player) or winner(grid, opponent(player)) or draw(grid) or depth > max_depth):
+        evaluation = evaluate(grid, player)
+        return State(grid, opponent(player), move if state.last_move == None else state.last_move, evaluation)
+
+#    if (winner(grid, player) or depth > max_depth):
+#        if player == settings.player_mark:
+#            evaluation = sign.HUMAN * evaluate(grid)
+#        elif player == settings.ai_mark:
+#            evaluation = sign.AI * evaluate(grid)
+#        return State(grid, opponent(player), move if state.last_move == None else state.last_move, evaluation)
+#
+#    if winner(grid, opponent(player)):
+#        if opponent(player) == settings.player_mark:
+#            evaluation = sign.HUMAN * evaluate(grid)
+#        elif opponent(player) == settings.ai_mark:
+#            evaluation = sign.AI * evaluate(grid)
+#        return State(grid, opponent(player), move if state.last_move == None else state.last_move, evaluation)
+
+
+# utworzyc max state o wartosci ultility = infinity
+    maximum = State(None, None, None, - float('Inf'))
     for move in moves(grid):
         grid_copy = copy.deepcopy(grid)
         make_move(grid_copy, move, player)
-        x = - negamax(grid_copy, depth+1, opponent(player))
-        if x > maximum:
+        new_state = State(grid_copy, opponent(player), move if state.last_move == None else state.last_move, 0)
+        result = negamax(new_state, depth=depth+1)
+        x = result
+        x.utility = - result.utility
+
+        if x.utility > maximum.utility:
             maximum = x
+
     return maximum
 
 
-def game_over(grid, player):
+def winner(grid, player):
     if (column_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player) or
         row_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player) or
         diagonal_wins(grid, settings.grid_size, settings.grid_size, settings.marks_to_win, player)):
@@ -32,11 +64,27 @@ def game_over(grid, player):
     else:
         return False
 
-def evaluate(grid):
-    if game_over(grid, settings.player_mark):
-        return +5
-    elif game_over(grid, settings.ai_mark):
-        return -5
+def draw(grid):
+    for x in range(settings.grid_size):
+        for y in range(settings.grid_size):
+            if grid[x][y] == '':
+                return False
+    return True
+
+def evaluate(grid, player):
+    #if winner(grid, settings.player_mark):
+    #    return +5
+    #elif winner(grid, settings.ai_mark):
+    #    return -5
+    #else:
+    #    return 0
+    isXWon = winner(grid, settings.player_mark)
+    isOWon = winner(grid, settings.ai_mark)
+
+    if isXWon:
+        return 1 if player == settings.player_mark else -1
+    elif isOWon:
+        return 1 if player == settings.ai_mark else -1
     else:
         return 0
 
@@ -187,12 +235,6 @@ def winning_diagonals(width, height, marks_to_win):
     return diagonals
 
     
-
-
-temp = winning_rows(3,3,3)
-temp = winning_rows(4,4,3)
-temp = winning_diagonals(3,3,3)
-temp = winning_diagonals(4,4,3)
 
 
 

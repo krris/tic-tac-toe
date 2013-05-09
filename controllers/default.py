@@ -62,6 +62,7 @@ def move():
         return False
     
     grid[i][j] = settings.player_mark
+    last_player_move = (i,j)
     moves.remove((i, j))
     session.game_finished = True
     [x, y] = [-1, -1] # Default values in case AI will not make move
@@ -72,9 +73,43 @@ def move():
         status = 'draw'
     else:
         # Make AI move
-        temp = negamax(copy.deepcopy(grid), 0, settings.ai_mark)
+        
+        # tests
+        s = [['O', 'X', 'O'],['','X','O'],['','','X']]
+        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+        a = negamax(ss)
+        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+        a = negamax(ss)
 
-        [x, y] = ai_move(grid)
+        s = [['O', '', ''],['','X',''],['X','O','']]
+        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+        a = negamax(ss)
+        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+        a = negamax(ss)
+
+        s = [['O', '', ''],['O','X','X'],['','','']]
+        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+        a = negamax(ss)
+        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+        a = negamax(ss)
+
+        s = [['X', 'X', ''],['','',''],['','','']]
+        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+        a = negamax(ss)
+        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+        a = negamax(ss)
+
+        s = [['', '', ''],['','X',''],['X','','']]
+        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
+        a = negamax(ss)
+        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
+        a = negamax(ss)
+
+        state = State(copy.deepcopy(grid), settings.ai_mark, None, 0)
+        new_state = negamax(state)
+
+        # [x, y] = ai_move(grid)
+        (x, y) = new_state.last_move
         grid[x][y] = settings.ai_mark
         
         if check_win(grid, [x, y], settings.ai_mark):
