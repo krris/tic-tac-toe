@@ -106,7 +106,9 @@ def move():
 #        a = negamax(ss)
 
         state = State(copy.deepcopy(grid), settings.ai_mark, None, 0)
-        new_state = negamax(state)
+        alpha = State(None, None, None, - float('Inf'))
+        beta = State(None, None, None, float('Inf'))
+        new_state = negamax(state, alpha, beta)
 
         # [x, y] = ai_move(grid)
         (x, y) = new_state.last_move

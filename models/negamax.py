@@ -4,7 +4,7 @@ import copy
 def enum(**enums):
     return type('Enum', (), enums)
 
-max_depth = 3
+max_depth = 9
 sign = enum(HUMAN=1, AI=-1)
 
 class State:
@@ -14,7 +14,7 @@ class State:
         self.last_move = last_move
         self.utility = utility
 
-def negamax(state, depth=0):
+def negamax(state, alpha, beta, depth=0):
     grid = state.grid
     player = state.player_to_move
 
@@ -27,12 +27,20 @@ def negamax(state, depth=0):
         grid_copy = copy.deepcopy(grid)
         make_move(grid_copy, move, player)
         new_state = State(grid_copy, opponent(player), move if state.last_move == None else state.last_move, 0)
-        result = negamax(new_state, depth=depth+1)
+
+        new_alpha = State(alpha.grid, alpha.player_to_move, alpha.last_move, - alpha.utility)
+        new_beta = State(beta.grid, beta.player_to_move, beta.last_move, - beta.utility)
+
+        result = negamax(new_state, new_beta, new_alpha, depth=depth+1)
         x = result
         x.utility = - result.utility
-
         if x.utility > maximum.utility:
             maximum = x
+
+        if x.utility > alpha.utility:
+            alpha = x
+        if alpha.utility >= beta.utility:
+            return alpha
 
     return maximum
 
