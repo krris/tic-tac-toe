@@ -106,6 +106,13 @@ def opponent(player):
     else:
         return settings.player_mark
 
+def elem(grid, x, y, default=None):
+    if x < 0 or y < 0:
+        return default
+    else:
+        return grid[y][x]
+
+
 def column_wins(grid, width, height, marks_to_win, player):
     for x in range(width):
         for y in range(height - marks_to_win + 1):
