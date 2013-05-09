@@ -70,12 +70,12 @@ def move():
         status = 'draw'
     else:
         # Make AI move
-        state = State(copy.deepcopy(grid), settings.ai_mark, None, 0)
+        state = State(copy.deepcopy(grid), settings.ai_mark, last_player_move, None, 0)
         alpha = State(utility= - float('Inf'))
         beta = State(utility= float('Inf'))
         new_state = negamax(state, alpha, beta)
 
-        (x, y) = new_state.last_move
+        (x, y) = new_state.crucial_move
         grid[x][y] = settings.ai_mark
         
         if check_win(grid, [x, y], settings.ai_mark):

@@ -5,10 +5,11 @@ max_depth = 9
 
 class State:
     def __init__(self, grid=None, player_to_move=None, 
-                last_move=None, utility=None):
+                last_move=None, crucial_move=None, utility=None):
         self.grid = grid
         self.player_to_move = player_to_move
         self.last_move = last_move
+        self.crucial_move = crucial_move
         self.utility = utility
 
     def copy(self):
@@ -22,7 +23,8 @@ def negamax(state, alpha, beta, depth=0):
         evaluation = evaluate(grid, player)
         return State(grid, 
                     opponent(player), 
-                    move if state.last_move == None else state.last_move, 
+                    state.last_move,
+                    move if state.crucial_move == None else state.crucial_move, 
                     evaluation)
 
     maximum = State(utility = (- float('Inf')))
@@ -31,7 +33,8 @@ def negamax(state, alpha, beta, depth=0):
         make_move(grid_copy, move, player)
         new_state = State(grid_copy, 
                           opponent(player), 
-                          move if state.last_move == None else state.last_move, 
+                          move,
+                          move if state.crucial_move == None else state.crucial_move, 
                           0)
 
         new_alpha = alpha.copy()
@@ -53,13 +56,11 @@ def negamax(state, alpha, beta, depth=0):
     return maximum
 
 def terminalState(state):
-    grid = state.grid
-    player = state.player_to_move
-    if (winner(grid, player) or 
-        winner(grid, opponent(player)) or 
-        GameStatus().draw(grid)):
+    player = opponent(state.player_to_move)
+    if check_win(state.grid, state.last_move, player):
         return True
-    return False
+    else:
+        return False
 
 def winner(grid, player):
     status = GameStatus()

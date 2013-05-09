@@ -1,20 +1,34 @@
 # coding: utf8
-#import pdb
 from operator import add
 
-def check_win(grid, movement, sign):
-    directions = [[0, 1], [1, 1], [1, 0], [1, -1]]
-    for d in directions :
-        hit = 1
-        for i in range(2):
-            move = map(add, movement, d)
-            while move[0]>=0 and move[1]>=0 and move[0]<len(grid) and move[1]<len(grid[0]) and grid[move[0]][move[1]] == sign:
-                hit += 1
-                move = map(add, move, d)
-            if hit >= settings.marks_to_win:
-                return True
-            d[:] = [x*(-1) for x in d]
-    return False
+def check_win(grid, move, player):
+    if (k_in_row(grid, move, player, (0, 1)) or
+        k_in_row(grid, move, player, (1, 0)) or
+        k_in_row(grid, move, player, (1, -1)) or
+        k_in_row(grid, move, player, (1, 1))):
+        return True
+    else:
+        return False
+
+def k_in_row(grid, move, player, (delta_x, delta_y)):
+    "Return true if there is a line through move on grid for player."
+    x, y = move
+    n = 0 # n is number of moves in row
+    while safe_list_get(grid, x) != None and safe_list_get(grid[x], y) == player:
+        n += 1
+        x, y = x + delta_x, y + delta_y
+    x, y = move
+    while safe_list_get(grid, x) != None and safe_list_get(grid[x], y) == player:
+        n += 1
+        x, y = x - delta_x, y - delta_y
+    n -= 1 # Because we counted move itself twice
+    return n >= settings.marks_to_win   
+
+def safe_list_get (l, idx, default=None):
+    try:
+        return l[idx]
+    except IndexError:
+        return default
 
 
 def check_draw(grid):
