@@ -30,8 +30,6 @@ def index():
         # Load grid
         grid = session.game_grid
         moves = session.moves
-        
-
     
     # Variables passed to view
     view_data = dict(
@@ -73,44 +71,11 @@ def move():
         status = 'draw'
     else:
         # Make AI move
-        
-        # tests
-#        s = [['O', 'X', 'O'],['','X','O'],['','','X']]
-#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-#        a = negamax(ss)
-#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-#        a = negamax(ss)
-#
-#        s = [['O', '', ''],['','X',''],['X','O','']]
-#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-#        a = negamax(ss)
-#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-#        a = negamax(ss)
-#
-#        s = [['O', '', ''],['O','X','X'],['','','']]
-#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-#        a = negamax(ss)
-#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-#        a = negamax(ss)
-#
-#        s = [['X', 'X', ''],['','',''],['','','']]
-#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-#        a = negamax(ss)
-#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-#        a = negamax(ss)
-#
-#        s = [['', '', ''],['','X',''],['X','','']]
-#        ss = State(copy.deepcopy(s), settings.player_mark, None, 0)
-#        a = negamax(ss)
-#        ss = State(copy.deepcopy(s), settings.ai_mark, None, 0)
-#        a = negamax(ss)
-
         state = State(copy.deepcopy(grid), settings.ai_mark, None, 0)
         alpha = State(None, None, None, - float('Inf'))
         beta = State(None, None, None, float('Inf'))
         new_state = negamax(state, alpha, beta)
 
-        # [x, y] = ai_move(grid)
         (x, y) = new_state.last_move
         grid[x][y] = settings.ai_mark
         
@@ -125,15 +90,6 @@ def move():
     session.game_grid = grid
     session.moves = moves
     return json.dumps({'x':x, 'y':y, 'status':status})     
-   
-
-def ai_move(grid):
-    x = random.randint(0,settings.grid_size-1)
-    y = random.randint(0,settings.grid_size-1)
-    while(grid[x][y]!=''):
-        x = random.randint(0,settings.grid_size-1)
-        y = random.randint(0,settings.grid_size-1)
-    return [x, y]
     
 def reset():
     session.game_grid = None
