@@ -37,9 +37,9 @@ else:
    print platform.system() + " not supported"
 
 #build C++ library
-cpplib = env.SharedLibrary( target = 'hello_ext', source = ['calc/src/hello.cpp'])
+cpplib = env.SharedLibrary( target = 'game_status', source = ['calc/game_status.cpp'])
 if(platform.system() == "Linux"):
-   target = 'modules/hello_ext.so'
+   target = 'modules/game_status.so'
 elif(platform.system() == "Windows"):
    target = 'app/modules/calc.pyd'
 env.Command(target, cpplib, copyLibBuilder )
