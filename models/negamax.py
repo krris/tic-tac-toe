@@ -1,6 +1,51 @@
 # -*- coding: utf-8 -*-
 import copy
 
+def winning_columns(width, height, marks_to_win):
+    columns = []
+    for x in range(width):
+        for y in range(height - marks_to_win + 1):
+            col = [] 
+            for i in range(marks_to_win):
+                col.append( (y + i, x) )
+            columns.append(col)
+    return columns
+
+def winning_rows(width, height, marks_to_win):
+    rows = []
+    for y in range(height):
+        for x in range(width - marks_to_win + 1):
+            row = [] 
+            for i in range(marks_to_win):
+                row.append( (y, x + i) )
+            rows.append(row)
+    return rows
+
+def winning_diagonals(width, height, marks_to_win):
+    diagonals = []
+    for x in range(width - marks_to_win + 1):
+        for y in range(height - marks_to_win + 1):
+            diag = [] 
+            for i in range(marks_to_win):
+                diag.append( (y + i, x + i) )
+            diagonals.append(diag)
+
+    for x in range(width - 1, width - marks_to_win, -1):
+        for y in range(height - marks_to_win + 1):
+            diag = [] 
+            for i in range(marks_to_win):
+                diag.append( (y + i, x - i) )
+            diagonals.append(diag)
+
+    return diagonals
+
+combos = []
+grid_size = settings.grid_size
+marks_to_win = settings.marks_to_win
+combos.extend(winning_columns(grid_size, grid_size, marks_to_win))
+combos.extend(winning_rows(grid_size, grid_size, marks_to_win))
+combos.extend(winning_diagonals(grid_size, grid_size, marks_to_win))
+
 class State:
     def __init__(self, grid=None, player_to_move=None, 
                 last_move=None, utility=None):
@@ -61,13 +106,22 @@ def terminalState(state):
     return False
 
 def winner(grid, player):
-    status = GameStatus()
-    if (status.column_wins(grid, player) or
-        status.row_wins(grid, player) or
-        status.diagonal_wins(grid, player)):
-        return True
-    else:
-        return False
+    for combo in combos:
+        counter = 0
+        for mark in combo:
+            mark_y, mark_x = mark
+            if grid[mark_y][mark_x] == player:
+                counter += 1
+            if counter == settings.marks_to_win:
+                return True
+    return False
+#    status = GameStatus()
+#    if (status.column_wins(grid, player) or
+#        status.row_wins(grid, player) or
+#        status.diagonal_wins(grid, player)):
+#        return True
+#    else:
+#        return False
 
 def evaluate(grid, player):
     isXWon = winner(grid, settings.player_mark)
@@ -160,4 +214,7 @@ class GameStatus:
                         return True
     
         return False
-    
+
+
+
+   
