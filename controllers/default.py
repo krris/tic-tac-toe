@@ -2,7 +2,6 @@
 import json
 import random
 import copy
-from minimax import ai_minimax_move
 
 ### required - do no delete
 def user(): return dict(form=auth())

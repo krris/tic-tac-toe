@@ -5,8 +5,18 @@
 using namespace boost::python;
 using namespace std;
 
-bool draw(object grid)
+bool draw(vector <vector<string> > matrix)
 {
+    vector<vector<string> >::iterator row;
+    vector<string>::iterator column;
+    for (row = matrix.begin(); row != matrix.end(); row++)
+    {
+        for (column = (*row).begin(); column != (*row).end(); column++)
+        {
+            if ((*column).empty())
+                return false;
+        }
+    }
     return true;
 }
 

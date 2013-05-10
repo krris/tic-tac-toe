@@ -1,5 +1,5 @@
 # coding: utf8
-#import pdb
+import game_status
 from operator import add
 
 def check_win(grid, move, player):
@@ -35,8 +35,15 @@ def safe_list_get (l, idx, default=None):
 
 
 def check_draw(grid):
-    empty = sum(1 for row in grid for i in row if i=='')                 
-    if empty == 0:
-        return True
-    else:
-        return False
+    return game_status.draw(convert(grid))
+
+def convert(grid):
+    matrix = game_status.StringMatrix()
+    for y in range(settings.grid_size):
+        row = game_status.StringVec()
+        for x in range(settings.grid_size):
+            row.append(grid[y][x])
+        matrix.append(row)
+    return matrix
+
+
