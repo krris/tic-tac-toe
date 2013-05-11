@@ -19,10 +19,11 @@ public:
     bool winner(Grid grid, Move move, std::string player);
 private:
     std::vector<Row> getWinningColumns();
-    std::vector<Row> getWinninRows();
+    std::vector<Row> getWinningRows();
     std::vector<Row> getWinningDiagonals();
 
     PSettings settings;
+    std::vector<Row> winning_combos;
 };
 
 #endif

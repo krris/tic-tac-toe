@@ -3,6 +3,18 @@
 Status::Status(PSettings settings)
 {
     this->settings = settings;
+    std::vector<Row> winning_columns = getWinningColumns();
+    std::vector<Row> winning_rows = getWinningRows();
+    std::vector<Row> winning_diagonals = getWinningDiagonals();
+
+    this->winning_combos.insert(winning_combos.end(), 
+                                winning_rows.begin(), winning_rows.end());
+
+    this->winning_combos.insert(winning_combos.end(), 
+                                winning_columns.begin(), winning_columns.end());
+
+    this->winning_combos.insert(winning_combos.end(), 
+                                winning_diagonals.begin(), winning_diagonals.end());
 }
 
 bool Status::draw(Grid grid)
@@ -53,7 +65,7 @@ std::vector<Row> Status::getWinningColumns()
     return columns;
 }
 
-std::vector<Row> Status::getWinninRows() 
+std::vector<Row> Status::getWinningRows() 
 {
     int height = settings->getGridHeight();
     int width = settings->getGridWidth();
