@@ -1,3 +1,6 @@
+#ifndef SETTINGS_HPP
+#define SETTINGS_HPP
+
 #include <string>
 #include <boost/smart_ptr.hpp>
 
@@ -28,4 +31,4 @@ private:
 
 };
 
-
+#endif

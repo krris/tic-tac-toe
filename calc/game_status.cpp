@@ -3,6 +3,7 @@
 #include <boost/python.hpp>
 
 #include "settings.hpp"
+#include "status.hpp"
 
 using namespace boost::python;
 using namespace std;
@@ -61,10 +62,15 @@ BOOST_PYTHON_MODULE(game_status)
         .def(vector_indexing_suite<vector <vector<string> > >())
     ;
 
-    class_<Settings, boost::shared_ptr<Settings>, boost::noncopyable>("Settings", no_init) 
+    class_<Settings, boost::shared_ptr<Settings>, boost::noncopyable>
+        ("Settings", no_init) 
         .def("get_instance", &Settings::getInstance )
         .staticmethod("get_instance")
         .def("initialize", &Settings::initialize, args("grid_width", "grid_height",
              "marks_to_win", "player_mark", "ai_mark"), "Settings docstring")
+    ;
+
+    class_<Status>("Status", init<boost::shared_ptr<Settings> >())
+        .def("draw", &Status::draw, args("grid"), "status::draw Docstring")
     ;
 }
