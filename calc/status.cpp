@@ -20,3 +20,95 @@ bool Status::draw(Grid grid)
     }
     return true;
 }
+
+bool Status::winner(Grid grid, std::string player)
+{
+    return false;
+}
+
+bool Status::winner(Grid grid, Move move, std::string player) 
+{
+    return false;
+}
+
+std::vector<Row> Status::getWinningColumns()
+{
+    int height = settings->getGridHeight();
+    int width = settings->getGridWidth();
+    int marks_to_win = settings->getMarksToWin();
+    std::vector<Row> columns;
+
+    for (int x = 0; x < width; ++x)
+    {
+        for (int y = 0; y < (height - marks_to_win + 1); ++y)
+        {
+            Row column;
+            for (int i = 0; i < marks_to_win; ++i)
+            {
+                column.push_back( std::make_pair(y + i, x));
+            }
+            columns.push_back(column);
+        }
+    }
+    return columns;
+}
+
+std::vector<Row> Status::getWinninRows() 
+{
+    int height = settings->getGridHeight();
+    int width = settings->getGridWidth();
+    int marks_to_win = settings->getMarksToWin();
+    std::vector<Row> rows;
+
+    for (int y = 0; y < height; ++y)
+    {
+        for (int x = 0; x < (width - marks_to_win + 1); ++x)
+        {
+            Row row;
+            for (int i = 0; i < marks_to_win; ++i)
+            {
+                row.push_back( std::make_pair(y, x + i));
+            }
+            rows.push_back(row);
+        }
+    }
+    return rows;
+
+}
+
+std::vector<Row> Status::getWinningDiagonals() 
+{
+    int height = settings->getGridHeight();
+    int width = settings->getGridWidth();
+    int marks_to_win = settings->getMarksToWin();
+    std::vector<Row> diagonals;
+
+    for (int x = 0; x < width - marks_to_win + 1; ++x)
+    {
+        for (int y = 0; y < (height - marks_to_win + 1); ++y)
+        {
+            Row diagonal;
+            for (int i = 0; i < marks_to_win; ++i)
+            {
+                diagonal.push_back( std::make_pair(y + i, x + i));
+            }
+            diagonals.push_back(diagonal);
+        }
+    }
+
+    for (int x = width - 1; x > width - marks_to_win; --x)
+    {
+        for (int y = 0; y < (height - marks_to_win + 1); ++y)
+        {
+            Row diagonal;
+            for (int i = 0; i < marks_to_win; ++i)
+            {
+                diagonal.push_back( std::make_pair(y + i, x - i));
+            }
+            diagonals.push_back(diagonal);
+        }
+    }
+
+    return diagonals;
+}
+
