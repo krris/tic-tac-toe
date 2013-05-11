@@ -1,5 +1,8 @@
 #include <boost/test/minimal.hpp>
 #include <log4cxx/basicconfigurator.h>
+#include <iostream>
+
+#define private public
 
 #include "../calc/settings.hpp"
 #include "../calc/status.hpp"
@@ -15,7 +18,7 @@ int test_main( int argc, char* argv[] )
     // Set default settings for the game
     int grid_size = 3;
     int marks_to_win = 3;
-    std::string player_mark = "O";
+    std::string player_mark = "blabla";
     std::string ai_mark = "X";
 
     PSettings pSettings = Settings::getInstance();
@@ -32,12 +35,23 @@ int test_main( int argc, char* argv[] )
     Grid grid = {{"X","X","X"}, 
                  {"" ,"", ""},
                  {"" ,"", ""}};
+    BOOST_CHECK (status.draw(grid) == false);
 
-    BOOST_CHECK (status.winner(grid, ai_mark) == true);
+    for (Row row: status.getWinningDiagonals())
+    {
+        for (Move move: row)
+        {
+            std::cout << "(" << move.first << ", " << move.second << ")" << std::endl;
+        }
+    } 
 
 
 
 
+
+    BOOST_CHECK (status.winner(grid, player_mark) == false);
+   // BOOST_CHECK (status.winner(grid, std::make_pair(0,0), ai_mark) == true);
+   // BOOST_CHECK (status.winner(grid, player_mark) != true);
 
 
 

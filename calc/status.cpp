@@ -186,7 +186,7 @@ std::vector<Row> Status::getWinningDiagonals()
         }
     }
 
-    for (int x = width - 1; x > width - marks_to_win; --x)
+    for (int x = width - 1; x > width - marks_to_win + 1; --x)
     {
         for (int y = 0; y < (height - marks_to_win + 1); ++y)
         {

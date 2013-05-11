@@ -6,9 +6,9 @@ env = Environment()
 
 if(platform.system() == "Linux"):
    
-   env.Append( CPPFLAGS = '-Wall -pedantic -pthread -O3 -std=c++0x' )
-   env.Append( LINKFLAGS = '-Wall -pthread ' )
+   env.Append( CPPFLAGS = '-g -Wall -pedantic -std=c++0x' )
+   env.Append( LINKFLAGS = '-Wall ' )
 
    env.Append( LIBS = [ 'log4cxx' ] )
 
-env.Program('test', ['test.cpp', '../calc/settings.cpp', '../calc/status.cpp'])
+   env.Program('test', ['test.cpp', '../calc/settings.cpp', '../calc/status.cpp'])
