@@ -1,0 +1,14 @@
+import os, shutil, platform
+
+env = Environment()
+#env.Append( ENV = {'PATH' : os.environ['PATH'] })
+
+
+if(platform.system() == "Linux"):
+   
+   env.Append( CPPFLAGS = '-Wall -pedantic -pthread -O3 -std=c++0x' )
+   env.Append( LINKFLAGS = '-Wall -pthread ' )
+
+   env.Append( LIBS = [ 'log4cxx' ] )
+
+env.Program('test', ['test.cpp'])

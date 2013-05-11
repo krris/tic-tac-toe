@@ -70,7 +70,8 @@ bool Status::kInRow(Grid grid, Move move, std::string player, int delta_x, int d
 
     // n is a number of moves in row
     int n = 0;
-    while (exists(grid, x) && exists(grid[x], y))
+   // while (exists(grid, x) && exists(grid.at(x), y))
+    while (exists(grid, x, y))
     {
         if (grid[x][y] == player)
         {
@@ -81,7 +82,8 @@ bool Status::kInRow(Grid grid, Move move, std::string player, int delta_x, int d
     } 
     x = move.first;
     y = move.second;
-    while (exists(grid, x) && exists(grid[x], y))
+  //  while (exists(grid, x) && exists(grid[x], y))
+    while (exists(grid, x, y))
     {
         if (grid[x][y] == player)
         {
@@ -96,10 +98,10 @@ bool Status::kInRow(Grid grid, Move move, std::string player, int delta_x, int d
 }
 
 
-bool Status::exists(Grid grid, int index)
+bool Status::exists(Grid grid, int x, int y)
 {
     try {
-        grid.at(index);
+        grid[x][y];
     }
     catch (const std::out_of_range& oor) {
         return false;
@@ -107,16 +109,16 @@ bool Status::exists(Grid grid, int index)
     return true;
 }
 
-bool exists(std::vector<std::string> row, int index)
-{
-    try {
-        row.at(index);
-    }
-    catch (const std::out_of_range& oor) {
-        return false;
-    }
-    return true;
-}
+//bool exists(std::vector<std::string> row, int index)
+//{
+//    try {
+//        row.at(index);
+//    }
+//    catch (const std::out_of_range& oor) {
+//        return false;
+//    }
+//    return true;
+//}
 
 
 std::vector<Row> Status::getWinningColumns()

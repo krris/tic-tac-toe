@@ -51,7 +51,7 @@ def move():
     game_settings.initialize(settings.grid_size, settings.grid_size, settings.marks_to_win,
                             settings.player_mark, settings.ai_mark)
 
-    status = Status(game_settings)
+    game_status = Status(game_settings)
     
     if(request.post_vars.i == None or request.post_vars.j == None or session.game_finished):
         return False
@@ -69,8 +69,13 @@ def move():
     moves.remove((i, j))
     session.game_finished = True
     [x, y] = [-1, -1] # Default values in case AI will not make move
+
+    player_move = IntPair()
+    player_move.first = i
+    player_move.second = j
     
-    if check_win(grid, [i, j], settings.player_mark):        
+    #if check_win(grid, [i, j], settings.player_mark):        
+    if game_status.winner(convert(grid), player_move, settings.player_mark):        
         status = 'player_won'
     elif status.draw(convert(grid)):
         status = 'draw'
@@ -84,9 +89,13 @@ def move():
         (x, y) = new_state.last_move
         grid[x][y] = settings.ai_mark
         
-        if check_win(grid, [x, y], settings.ai_mark):
+        #if check_win(grid, [x, y], settings.ai_mark):
+        ai_move = IntPair()
+        ai_move.first = x
+        ai_move.second = y
+        if game_status.winner(convert(grid), ai_move, settings.ai_mark):
             status = 'ai_won'
-        elif status.draw(convert(grid)):
+        elif game_status.draw(convert(grid)):
             status = 'draw'
         else:
             status = 'none'

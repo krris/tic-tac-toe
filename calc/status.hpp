@@ -25,8 +25,8 @@ private:
 
     bool kInRow(Grid grid, Move move, std::string player,
                 int delta_x, int delta_y);
-    bool exists(Grid grid, int index);
-    bool exists(std::vector<std::string> row, int index);
+    bool exists(Grid grid, int x, int y);
+//bool exists(std::vector<std::string> row, int index);
 
     PSettings settings;
     std::vector<Row> winning_combos;

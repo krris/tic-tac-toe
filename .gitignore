@@ -1,3 +1,6 @@
+tests/test
+*.o
+*.out
 *.os
 .sconsign.dblite
 
