@@ -2,6 +2,7 @@
 import json
 import random
 import copy
+from game_status import *
 
 ### required - do no delete
 def user(): return dict(form=auth())
@@ -45,6 +46,12 @@ def index():
     
 
 def move():
+
+    game_settings = Settings.get_instance()
+    game_settings.initialize(settings.grid_size, settings.grid_size, settings.marks_to_win,
+                            settings.player_mark, settings.ai_mark)
+
+    status = Status(game_settings)
     
     if(request.post_vars.i == None or request.post_vars.j == None or session.game_finished):
         return False
@@ -65,7 +72,7 @@ def move():
     
     if check_win(grid, [i, j], settings.player_mark):        
         status = 'player_won'
-    elif check_draw(grid):
+    elif status.draw(convert(grid)):
         status = 'draw'
     else:
         # Make AI move
@@ -79,7 +86,7 @@ def move():
         
         if check_win(grid, [x, y], settings.ai_mark):
             status = 'ai_won'
-        elif check_draw(grid):
+        elif status.draw(convert(grid)):
             status = 'draw'
         else:
             status = 'none'
