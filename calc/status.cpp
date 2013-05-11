@@ -35,13 +35,89 @@ bool Status::draw(Grid grid)
 
 bool Status::winner(Grid grid, std::string player)
 {
+    for (Row row: winning_combos)
+    {
+        int counter = 0;
+        for (Move move: row)
+        {
+            int y = move.first;
+            int x = move.second;
+            if (grid[y][x] == player)
+               counter++;
+            if (counter == settings->getMarksToWin())
+               return true; 
+        } 
+    }
     return false;
 }
 
 bool Status::winner(Grid grid, Move move, std::string player) 
 {
-    return false;
+    if (kInRow(grid, move, player, 0, 1) ||
+        kInRow(grid, move, player, 1, 0) ||
+        kInRow(grid, move, player, 1, -1) ||
+        kInRow(grid, move, player, 1, 1) )
+        return true;
+    else
+        return false;
 }
+
+
+bool Status::kInRow(Grid grid, Move move, std::string player, int delta_x, int delta_y)
+{
+    int x = move.first;
+    int y = move.second;
+
+    // n is a number of moves in row
+    int n = 0;
+    while (exists(grid, x) && exists(grid[x], y))
+    {
+        if (grid[x][y] == player)
+        {
+            n++;
+            x += delta_x;
+            y += delta_y;
+        } 
+    } 
+    x = move.first;
+    y = move.second;
+    while (exists(grid, x) && exists(grid[x], y))
+    {
+        if (grid[x][y] == player)
+        {
+            n++;
+            x -= delta_x;
+            y -= delta_y;
+        } 
+    } 
+    n -= 1; // becouse we counted move itself twice
+    return (n >= settings->getMarksToWin());
+
+}
+
+
+bool Status::exists(Grid grid, int index)
+{
+    try {
+        grid.at(index);
+    }
+    catch (const std::out_of_range& oor) {
+        return false;
+    }
+    return true;
+}
+
+bool exists(std::vector<std::string> row, int index)
+{
+    try {
+        row.at(index);
+    }
+    catch (const std::out_of_range& oor) {
+        return false;
+    }
+    return true;
+}
+
 
 std::vector<Row> Status::getWinningColumns()
 {
