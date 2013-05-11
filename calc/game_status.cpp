@@ -6,28 +6,9 @@ using namespace boost::python;
 using namespace std;
 
 
-class Settings{
-public:
-    static Settings* getInstance();
-private:
-    Settings() {};
-    Setiings(const Settings&);
-    Settings* pInstance;
 
-    int grid_width;
-    int grid_height;
-    int marks_to_win;
-    string player_mark;
-    string ai_mark;
 
-};
 
-Settings* Setiings::getInstance()
-{
-    if (!pInstance)
-        pInstance = new Settings;
-    return pInstance;
-}
 
 bool draw(vector <vector<string> > matrix)
 {
