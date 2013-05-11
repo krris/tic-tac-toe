@@ -8,20 +8,20 @@
 using namespace boost::python;
 using namespace std;
 
-bool draw(vector <vector<string> > matrix)
-{
-    vector<vector<string> >::iterator row;
-    vector<string>::iterator column;
-    for (row = matrix.begin(); row != matrix.end(); row++)
-    {
-        for (column = (*row).begin(); column != (*row).end(); column++)
-        {
-            if ((*column).empty())
-                return false;
-        }
-    }
-    return true;
-}
+//bool draw(vector <vector<string> > matrix)
+//{
+//    vector<vector<string> >::iterator row;
+//    vector<string>::iterator column;
+//    for (row = matrix.begin(); row != matrix.end(); row++)
+//    {
+//        for (column = (*row).begin(); column != (*row).end(); column++)
+//        {
+//            if ((*column).empty())
+//                return false;
+//        }
+//    }
+//    return true;
+//}
 
 void print_list(vector<string> list)
 {
@@ -48,7 +48,7 @@ void print_matrix(vector <vector<string> > matrix)
 
 BOOST_PYTHON_MODULE(game_status)
 {
-    def("draw", draw, args("grid"), "draw's docstring");
+//    def("draw", draw, args("grid"), "draw's docstring");
     def("print_list", print_list, args("list"));
     def("print_matrix", print_matrix, args("matrix"));
     
@@ -70,7 +70,13 @@ BOOST_PYTHON_MODULE(game_status)
              "marks_to_win", "player_mark", "ai_mark"), "Settings docstring")
     ;
 
+    // Member function pointers variables for handling overloade functions
+    bool (Status::*winner_ver1)(Grid, std::string) = &Status::winner;
+    bool (Status::*winner_ver2)(Grid, Move, std::string) = &Status::winner;
+
     class_<Status>("Status", init<boost::shared_ptr<Settings> >())
         .def("draw", &Status::draw, args("grid"), "status::draw Docstring")
+        .def("winner", winner_ver1)
+        .def("winner", winner_ver2) 
     ;
 }
