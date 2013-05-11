@@ -64,8 +64,9 @@ BOOST_PYTHON_MODULE(game_status)
 
     // pair of integers
     class_<std::pair<int, int> >("IntPair")
-        .def_readwrite("first", &std::pair<int, int>::first);
-        .def_readwrite("second", &std::pair<int, int>::second);
+        .def_readwrite("first", &std::pair<int, int>::first)
+        .def_readwrite("second", &std::pair<int, int>::second)
+    ;
 
     class_<Settings, boost::shared_ptr<Settings>, boost::noncopyable>
         ("Settings", no_init) 

@@ -77,7 +77,7 @@ def move():
     #if check_win(grid, [i, j], settings.player_mark):        
     if game_status.winner(convert(grid), player_move, settings.player_mark):        
         status = 'player_won'
-    elif status.draw(convert(grid)):
+    elif game_status.draw(convert(grid)):
         status = 'draw'
     else:
         # Make AI move

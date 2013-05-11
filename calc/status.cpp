@@ -68,29 +68,45 @@ bool Status::kInRow(Grid grid, Move move, std::string player, int delta_x, int d
     int x = move.first;
     int y = move.second;
 
+    int grid_size = settings->getGridHeight();
+
     // n is a number of moves in row
     int n = 0;
    // while (exists(grid, x) && exists(grid.at(x), y))
-    while (exists(grid, x, y))
+   // while (exists(grid, x, y))
+   while( true )  
     {
+        if (x < 0 || y < 0)
+            break;
+        if (x >= grid_size || y >= grid_size)
+            break;
         if (grid[x][y] == player)
         {
             n++;
             x += delta_x;
             y += delta_y;
         } 
+        else
+            break;
     } 
     x = move.first;
     y = move.second;
   //  while (exists(grid, x) && exists(grid[x], y))
-    while (exists(grid, x, y))
+    //while (exists(grid, x, y))
+   while( true )  
     {
+        if (x < 0 || y < 0)
+            break;
+        if (x >= grid_size || y >= grid_size)
+            break;
         if (grid[x][y] == player)
         {
             n++;
             x -= delta_x;
             y -= delta_y;
         } 
+        else
+            break;
     } 
     n -= 1; // becouse we counted move itself twice
     return (n >= settings->getMarksToWin());
