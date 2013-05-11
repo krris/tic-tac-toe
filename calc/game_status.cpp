@@ -2,13 +2,10 @@
 #include <iostream>
 #include <boost/python.hpp>
 
+#include "settings.hpp"
+
 using namespace boost::python;
 using namespace std;
-
-
-
-
-
 
 bool draw(vector <vector<string> > matrix)
 {
@@ -51,7 +48,6 @@ void print_matrix(vector <vector<string> > matrix)
 BOOST_PYTHON_MODULE(game_status)
 {
     def("draw", draw, args("grid"), "draw's docstring");
-
     def("print_list", print_list, args("list"));
     def("print_matrix", print_matrix, args("matrix"));
     
@@ -63,5 +59,12 @@ BOOST_PYTHON_MODULE(game_status)
     // vector of vector of strings
     class_<vector <vector<string> > >("StringMatrix")
         .def(vector_indexing_suite<vector <vector<string> > >())
+    ;
+
+    class_<Settings, boost::shared_ptr<Settings>, boost::noncopyable>("Settings", no_init) 
+        .def("get_instance", &Settings::getInstance )
+        .staticmethod("get_instance")
+        .def("initialize", &Settings::initialize, args("grid_width", "grid_height",
+             "marks_to_win", "player_mark", "ai_mark"), "Settings docstring")
     ;
 }

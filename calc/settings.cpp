@@ -1,13 +1,14 @@
 #include "settings.hpp"
 
-Settings* Settings::pInstance = 0l;
+PSettings Settings::pInstance = nullptr;
 
-Settings* Settings::getInstance()
+PSettings Settings::getInstance()
 {
     if (!pInstance)
-        pInstance = new Settings;
+        pInstance = PSettings(new Settings);
     return pInstance;
-};
+}
+
 
 void Settings::initialize(int grid_width, int grid_height, int marks_to_win,
                           std::string player_mark, std::string ai_mark)
@@ -43,3 +44,4 @@ std::string Settings::getAiMark()
 {
     return this->ai_mark;
 }
+

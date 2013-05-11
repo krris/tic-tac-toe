@@ -1,8 +1,12 @@
 #include <string>
+#include <boost/smart_ptr.hpp>
+
+class Settings;
+typedef boost::shared_ptr<Settings> PSettings;
 
 class Settings{
 public:
-    static Settings* getInstance();
+    static PSettings getInstance();
     void initialize(int grid_width, int grid_height, int marks_to_win,
                     std::string player_mark, std::string ai_mark);
     int getGridWidth();
@@ -14,7 +18,7 @@ public:
 private:
     Settings() {};
     Settings(const Settings&) {}
-    static Settings* pInstance;
+    static PSettings pInstance;
 
     int grid_width;
     int grid_height;
@@ -23,3 +27,5 @@ private:
     std::string ai_mark;
 
 };
+
+

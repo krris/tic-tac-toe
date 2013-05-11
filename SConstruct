@@ -21,7 +21,7 @@ if(platform.system() == "Linux"):
    env.Append( CPPPATH = ['/usr/include/python2.7'] )
    env.Append( LIBPATH = ['/usr/lib/python2.7'] )
 
-   env.Append( CPPFLAGS = '-Wall -pedantic -pthread -O3' )
+   env.Append( CPPFLAGS = '-Wall -pedantic -pthread -O3 -std=c++0x -lboostpython' )
    env.Append( LINKFLAGS = '-Wall -pthread' )
 
    env.Append( LIBS = [ 'boost_python' ] )
@@ -37,7 +37,7 @@ else:
    print platform.system() + " not supported"
 
 #build C++ library
-cpplib = env.SharedLibrary( target = 'game_status', source = ['calc/game_status.cpp'])
+cpplib = env.SharedLibrary( target = 'game_status', source = ['calc/game_status.cpp', 'calc/settings.cpp'])
 if(platform.system() == "Linux"):
    target = 'modules/game_status.so'
 elif(platform.system() == "Windows"):
