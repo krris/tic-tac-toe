@@ -28,7 +28,7 @@ private:
     int marks_to_win;
     std::string player_mark;
     std::string ai_mark;
-
+    
 };
 
 #endif

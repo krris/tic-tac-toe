@@ -38,7 +38,7 @@ else:
 
 #build C++ library
 cpplib = env.SharedLibrary( target = 'game_status', 
-                source = ['calc/game_status.cpp', 'calc/settings.cpp', 'calc/status.cpp'])
+                source = ['calc/game_status.cpp', 'calc/settings.cpp', 'calc/status.cpp', 'calc/ai.cpp'])
 if(platform.system() == "Linux"):
    target = 'modules/game_status.so'
 elif(platform.system() == "Windows"):
