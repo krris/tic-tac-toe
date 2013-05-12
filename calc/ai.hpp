@@ -1,11 +1,15 @@
 #ifndef AI_HPP
 #define AI_HPP
 
+#include <limits>
+
 #include "settings.hpp"
 #include "status.hpp"
 
+
 struct State{
     State() {}
+    State(int utility);
     State(Grid grid, std::string player_to_move,
           Move last_move, int utility);
 
@@ -19,9 +23,10 @@ struct State{
 class Ai{
 public:
     Ai(PSettings settings, int max_depth);
-    void move(State state);
+    State move(State state);
+
 private:
-    State negamax(State state);
+    State negamax(State state, State alpha, State beta, int depth=0);
     bool terminalState(State state);
     int evaluate(Grid grid, std::string player);
     std::vector<Move> moves(Grid grid);
