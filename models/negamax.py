@@ -66,7 +66,8 @@ def negamax(state, alpha, beta, depth=0):
         evaluation = evaluate(grid, player)
         return State(grid, 
                     opponent(player), 
-                    move if state.last_move == None else state.last_move, 
+                    #move if state.last_move == None else state.last_move, 
+                    state.last_move, 
                     evaluation)
 
     maximum = State(utility = (- float('Inf')))

@@ -5,7 +5,7 @@ State::State(int utility)
     this->utility = utility;
 }
 
-State::State(Grid grid, std::string player_to_move, Move last_move, int utility) 
+State::State(Grid grid, std::string player_to_move, PMove last_move, int utility) 
 {
     this->grid = grid;
     this->player_to_move = player_to_move;
@@ -29,9 +29,54 @@ State Ai::move(State state)
     return negamax(state, alpha, beta);
 }
 
-State Ai::negamax(State state, State alpha, State beta, int depth=0)
+State Ai::negamax(State state, State alpha, State beta, int depth)
 {
-    
+    Grid grid = state.grid;
+    std::string player = state.player_to_move;
+
+    if (terminalState(state) || depth > max_depth)
+    {
+        int evaluation = evaluate(grid, player);
+        State new_state = State(grid, opponent(player), state.last_move, evaluation);
+        return new_state; 
+    }
+
+    int infinity = std::numeric_limits<int>::max();
+    State maximum(-infinity);
+
+    for (Move move: moves(grid))
+    {
+        // deepcopy
+        Grid grid_copy = grid;
+        grid_copy = makeMove(grid_copy, move, player);
+
+        PMove new_state_move;
+        if (state.last_move == nullptr)
+            new_state_move = boost::make_shared<Move>(move);
+        else
+            new_state_move = state.last_move;
+
+        State new_state = State(grid_copy, opponent(player), new_state_move, 0);
+
+        State new_alpha = alpha;
+        new_alpha.utility = (- alpha.utility);
+
+        State new_beta = beta;
+        new_beta.utility = (- beta.utility);
+
+        State x = negamax(new_state, new_beta, new_alpha, depth+1);
+        x.utility = (- x.utility);
+
+        if (x.utility > maximum.utility)
+            maximum = x;
+
+        if (x.utility > alpha.utility)
+            alpha = x;
+
+        if (alpha.utility >= beta.utility)
+            return alpha;
+    }
+    return maximum;
 }
 
 bool Ai::terminalState(State state)

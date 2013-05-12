@@ -2,20 +2,23 @@
 #define AI_HPP
 
 #include <limits>
+#include <boost/smart_ptr.hpp>
 
 #include "settings.hpp"
 #include "status.hpp"
 
+typedef boost::shared_ptr<Move> PMove;
 
 struct State{
+
     State() {}
     State(int utility);
     State(Grid grid, std::string player_to_move,
-          Move last_move, int utility);
+          PMove last_move, int utility);
 
     Grid grid;
     std::string player_to_move;
-    Move last_move;
+    PMove last_move;
     int utility;
     
 };
