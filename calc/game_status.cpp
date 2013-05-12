@@ -4,6 +4,7 @@
 
 #include "settings.hpp"
 #include "status.hpp"
+#include "ai.hpp"
 
 using namespace boost::python;
 using namespace std;
@@ -85,4 +86,16 @@ BOOST_PYTHON_MODULE(game_status)
         .def("winner", winner_ver1)
         .def("winner", winner_ver2) 
     ;
+
+    class_<State>("State")
+        .def(init<>())
+        .def(init<int>())
+        .def(init<Grid, std::string, int>())
+        .def(init<Grid, std::string, PMove, int>())
+    ;
+
+    class_<Ai>("Ai", init<boost::shared_ptr<Settings>, int>())
+        .def("move", &Ai::move, args("state"), "Doscstring")
+    ;
+        
 }

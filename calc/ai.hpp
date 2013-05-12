@@ -13,6 +13,7 @@ struct State{
 
     State() {}
     State(int utility);
+    State(Grid grid, std::string player_to_move, int utility);
     State(Grid grid, std::string player_to_move,
           PMove last_move, int utility);
 

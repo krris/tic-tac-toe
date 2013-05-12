@@ -5,6 +5,15 @@ State::State(int utility)
     this->utility = utility;
 }
 
+
+State::State(Grid grid, std::string player_to_move, int utility)
+{
+    this->grid = grid;
+    this->player_to_move = player_to_move;
+    this->utility = utility;
+}
+
+
 State::State(Grid grid, std::string player_to_move, PMove last_move, int utility) 
 {
     this->grid = grid;
