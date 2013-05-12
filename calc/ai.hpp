@@ -17,6 +17,8 @@ struct State{
     State(Grid grid, std::string player_to_move,
           PMove last_move, int utility);
 
+    Move getLastMove() { return *last_move; }
+
     Grid grid;
     std::string player_to_move;
     PMove last_move;

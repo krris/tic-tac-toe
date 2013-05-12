@@ -92,6 +92,7 @@ BOOST_PYTHON_MODULE(game_status)
         .def(init<int>())
         .def(init<Grid, std::string, int>())
         .def(init<Grid, std::string, PMove, int>())
+        .def("get_last_move", &State::getLastMove)
     ;
 
     class_<Ai>("Ai", init<boost::shared_ptr<Settings>, int>())

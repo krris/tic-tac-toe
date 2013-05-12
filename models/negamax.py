@@ -46,16 +46,16 @@ combos.extend(winning_columns(grid_size, grid_size, marks_to_win))
 combos.extend(winning_rows(grid_size, grid_size, marks_to_win))
 combos.extend(winning_diagonals(grid_size, grid_size, marks_to_win))
 
-class State:
-    def __init__(self, grid=None, player_to_move=None, 
-                last_move=None, utility=None):
-        self.grid = grid
-        self.player_to_move = player_to_move
-        self.last_move = last_move
-        self.utility = utility
-
-    def copy(self):
-        return copy.deepcopy(self)
+#class State:
+#    def __init__(self, grid=None, player_to_move=None, 
+#                last_move=None, utility=None):
+#        self.grid = grid
+#        self.player_to_move = player_to_move
+#        self.last_move = last_move
+#        self.utility = utility
+#
+#    def copy(self):
+#        return copy.deepcopy(self)
 
 def negamax(state, alpha, beta, depth=0):
     grid = state.grid
