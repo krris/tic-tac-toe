@@ -1,9 +1,9 @@
-import game_status
+import game
 
 def convert(grid):
-    matrix = game_status.StringMatrix()
+    matrix = game.StringMatrix()
     for y in range(settings.grid_size):
-        row = game_status.StringVec()
+        row = game.StringVec()
         for x in range(settings.grid_size):
             row.append(grid[y][x])
         matrix.append(row)

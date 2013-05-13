@@ -2,7 +2,7 @@
 import json
 import random
 import copy
-from game_status import *
+import game 
 
 ### required - do no delete
 def user(): return dict(form=auth())
@@ -34,15 +34,14 @@ def index():
     )
     
     return view_data
-    
 
 def move():
 
-    game_settings = Settings.get_instance()
+    game_settings = game.Settings.get_instance()
     game_settings.initialize(settings.grid_size, settings.grid_size, settings.marks_to_win,
                             settings.player_mark, settings.ai_mark)
 
-    game_stat = Status(game_settings)
+    game_stat = game.Status(game_settings)
     
     if(request.post_vars.i == None or request.post_vars.j == None or session.game_finished):
         return False
@@ -57,11 +56,12 @@ def move():
     grid[i][j] = settings.player_mark
     last_player_move = (i,j)
     session.game_finished = True
-    #[x, y] = [-1, -1] # Default values in case AI will not make move
 
-    player_move = IntPair()
+    player_move = game.IntPair()
     player_move.first = i
     player_move.second = j
+    
+    [x, y] = [-1, -1] # Default values in case AI will not make move
     
     if game_stat.winner(convert(grid), player_move, settings.player_mark):        
         status = 'player_won'
@@ -69,8 +69,8 @@ def move():
         status = 'draw'
     else:
         # Make AI move
-        state = State(convert(copy.deepcopy(grid)), settings.ai_mark, 0)
-        ai = Ai(game_settings, settings.max_depth)
+        state = game.State(convert(copy.deepcopy(grid)), settings.ai_mark, 0)
+        ai = game.Ai(game_settings, settings.max_depth)
         new_state = ai.move(state)
 
         new_move = new_state.get_last_move()
@@ -78,7 +78,7 @@ def move():
         y = new_move.second
         grid[x][y] = settings.ai_mark
         
-        ai_move = IntPair()
+        ai_move = game.IntPair()
         ai_move.first = x
         ai_move.second = y
         if game_stat.winner(convert(grid), ai_move, settings.ai_mark):
