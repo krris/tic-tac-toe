@@ -73,7 +73,7 @@ def move():
         ai = game.Ai(game_settings, settings.max_depth)
         new_state = ai.move(state)
 
-        new_move = new_state.get_last_move()
+        new_move = new_state.get_crucial_move()
         x = new_move.first
         y = new_move.second
         grid[x][y] = settings.ai_mark

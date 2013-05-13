@@ -9,19 +9,31 @@
 
 typedef boost::shared_ptr<Move> PMove;
 
+/**
+ * Hold information about a state of the game.
+ */
 struct State{
 
     State() {}
+    /**
+     * @param utility Calculated utility of the current state.
+     */
     State(int utility);
+
+    /**
+     * @param grid A grid (board) of the game.
+     * @param player_to_move Next player, which will make a move.
+     * @param utility Calculated utility of the current state.
+     */
     State(Grid grid, std::string player_to_move, int utility);
     State(Grid grid, std::string player_to_move,
-          PMove last_move, int utility);
+          PMove crucial_move, int utility);
 
-    Move getLastMove() { return *last_move; }
+    Move getCrucialMove();
 
     Grid grid;
     std::string player_to_move;
-    PMove last_move;
+    PMove crucial_move;
     int utility;
     
 };

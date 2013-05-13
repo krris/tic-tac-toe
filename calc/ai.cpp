@@ -5,7 +5,6 @@ State::State(int utility)
     this->utility = utility;
 }
 
-
 State::State(Grid grid, std::string player_to_move, int utility)
 {
     this->grid = grid;
@@ -14,14 +13,18 @@ State::State(Grid grid, std::string player_to_move, int utility)
 }
 
 
-State::State(Grid grid, std::string player_to_move, PMove last_move, int utility) 
+State::State(Grid grid, std::string player_to_move, PMove crucial_move, int utility) 
 {
     this->grid = grid;
     this->player_to_move = player_to_move;
-    this->last_move = last_move;
+    this->crucial_move = crucial_move;
     this->utility = utility;
 }
 
+Move State::getCrucialMove() 
+{ 
+    return *crucial_move; 
+}
 
 Ai::Ai(PSettings settings, int max_depth)
 {
@@ -46,7 +49,7 @@ State Ai::negamax(State state, State alpha, State beta, int depth)
     if (terminalState(state) || depth > max_depth)
     {
         int evaluation = evaluate(grid, player);
-        State new_state = State(grid, opponent(player), state.last_move, evaluation);
+        State new_state = State(grid, opponent(player), state.crucial_move, evaluation);
         return new_state; 
     }
 
@@ -60,10 +63,10 @@ State Ai::negamax(State state, State alpha, State beta, int depth)
         grid_copy = makeMove(grid_copy, move, player);
 
         PMove new_state_move;
-        if (state.last_move == nullptr)
+        if (state.crucial_move == nullptr)
             new_state_move = boost::make_shared<Move>(move);
         else
-            new_state_move = state.last_move;
+            new_state_move = state.crucial_move;
 
         State new_state = State(grid_copy, opponent(player), new_state_move, 0);
 
