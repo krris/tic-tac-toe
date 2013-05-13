@@ -18,23 +18,14 @@ def index():
         session.game_grid = grid
         session.game_finished = False
         
-        # Possible moves in a current state (list of (x, y))
-        moves = []
-        for row in range(settings.grid_size):
-            for column in range(settings.grid_size):
-                moves.append((row, column))
-        session.moves = moves
-
     else:
         # Load grid
         grid = session.game_grid
-        moves = session.moves
     
     # Variables passed to view
     view_data = dict(
         grid_size = settings.grid_size, 
         grid = grid, 
-        moves = moves,
         player_mark = settings.player_mark, 
         ai_mark = settings.ai_mark,
         game_finished = session.game_finished,
@@ -59,22 +50,19 @@ def move():
     i = int(request.post_vars.i)
     j = int(request.post_vars.j)
     grid = session.game_grid
-    moves = session.moves
     
     if(i >= settings.grid_size or j >= settings.grid_size or i < 0 or j < 0 or grid[i][j] != ''):
         return False
     
     grid[i][j] = settings.player_mark
     last_player_move = (i,j)
-    moves.remove((i, j))
     session.game_finished = True
-    [x, y] = [-1, -1] # Default values in case AI will not make move
+    #[x, y] = [-1, -1] # Default values in case AI will not make move
 
     player_move = IntPair()
     player_move.first = i
     player_move.second = j
     
-    #if check_win(grid, [i, j], settings.player_mark):        
     if game_stat.winner(convert(grid), player_move, settings.player_mark):        
         status = 'player_won'
     elif game_stat.draw(convert(grid)):
@@ -82,20 +70,14 @@ def move():
     else:
         # Make AI move
         state = State(convert(copy.deepcopy(grid)), settings.ai_mark, 0)
-        #state = State(copy.deepcopy(grid), settings.ai_mark, None, 0)
-       # alpha = State(utility= - float('Inf'))
-       # beta = State(utility= float('Inf'))
-       # new_state = negamax(state, alpha, beta)
         ai = Ai(game_settings, settings.max_depth)
         new_state = ai.move(state)
 
         new_move = new_state.get_last_move()
-        #(x, y) = new_state.last_move
         x = new_move.first
         y = new_move.second
         grid[x][y] = settings.ai_mark
         
-        #if check_win(grid, [x, y], settings.ai_mark):
         ai_move = IntPair()
         ai_move.first = x
         ai_move.second = y
@@ -108,7 +90,6 @@ def move():
             session.game_finished = False # We keep on playing
         
     session.game_grid = grid
-    session.moves = moves
     return json.dumps({'x':x, 'y':y, 'status':status})     
     
 def reset():
