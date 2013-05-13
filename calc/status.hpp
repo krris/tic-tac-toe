@@ -4,7 +4,6 @@
 #include <string>
 #include <boost/smart_ptr.hpp>
 #include <string>
-#include <stdexcept>
 
 #include "settings.hpp"
 
@@ -25,7 +24,7 @@ private:
 
     bool kInRow(Grid grid, Move move, std::string player,
                 int delta_x, int delta_y);
-    bool exists(Grid grid, int x, int y);
+    bool outOfGridRange(int x, int y);
 
     PSettings settings;
     std::vector<Row> winning_combos;
