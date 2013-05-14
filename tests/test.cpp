@@ -17,8 +17,8 @@ int test_main( int argc, char* argv[] )
     LOG4CXX_INFO(logger, "Testing the library for python ...");
 
     // Set default settings for the game
-    int grid_size = 3;
-    int marks_to_win = 3;
+    int grid_size = 5;
+    int marks_to_win = 5;
     std::string player_mark = "X";
     std::string ai_mark = "O";
 
@@ -31,61 +31,117 @@ int test_main( int argc, char* argv[] )
     BOOST_CHECK (pSettings->getPlayerMark() == player_mark);
     BOOST_CHECK (pSettings->getAiMark() == ai_mark);
 
-
-
-    LOG4CXX_INFO(logger, "Checking Status::winner()...");
     Status status(pSettings);
 
-    Grid grid = {{"X","X","X"}, 
-                 {"" ,"", ""},
-                 {"" ,"O", ""}};
-    BOOST_CHECK (status.draw(grid) == false);
-    BOOST_CHECK (status.winner(grid, player_mark) == true);
-    BOOST_CHECK (status.winner(grid, ai_mark) == false);
+    Grid grid = {{"X","","", "", ""}, 
+                 {"" ,"", "", "", ""},
+                 {"" ,"", "", "", ""},
+                 {"" ,"", "", "", ""},
+                 {"" ,"", "", "", ""}};
 
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,0), ai_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,2), player_mark) == true);
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == true);
+    std::vector<Row> Diag = status.getWinningDiagonals();
 
-
-    grid = {{"X","","X"}, 
-            {"" ,"X", ""},
-            {"O" ,"", "X"}};
-    BOOST_CHECK (status.draw(grid) == false);
-    BOOST_CHECK (status.winner(grid, player_mark) == true);
-    BOOST_CHECK (status.winner(grid, ai_mark) == false);
+    for(Row row : Diag)
+    {
+        for (Move move : row)
+        {
+            std::cout << "( " << move.first << ", "<< move.second << ")" << std::endl;
+        }
+        std::cout << std::endl;
+    }
 
 
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,0), ai_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(2,2), player_mark) == true);
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == true);
-
-    grid = {{"X","O","X"}, 
-            {"" ,"O", ""},
-            {"O" ,"O", "X"}};
-    BOOST_CHECK (status.draw(grid) == false);
-    BOOST_CHECK (status.winner(grid, player_mark) == false);
-    BOOST_CHECK (status.winner(grid, ai_mark) == true);
-
-    BOOST_CHECK (status.winner(grid, std::make_pair(1,1), ai_mark) == true);
-    BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == true);
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,2), player_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == false);
 
 
-    grid = {{"X","X","O"}, 
-            {"O" ,"O", "X"},
-            {"X" ,"O", "O"}};
-    BOOST_CHECK (status.draw(grid) == true);
-    BOOST_CHECK (status.winner(grid, player_mark) == false);
-    BOOST_CHECK (status.winner(grid, ai_mark) == false);
+//    BOOST_CHECK (status.draw(grid) == false);
+//    //BOOST_CHECK (status.winner(grid, player_mark) == true);
+//    BOOST_CHECK (status.winner(grid, ai_mark) == false);
+//
+//    BOOST_CHECK (status.winner(grid, std::make_pair(0,0), ai_mark) == false);
+//    BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == false);
+//    BOOST_CHECK (status.winner(grid, std::make_pair(0,2), player_mark) == true);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == true);  
 
-    BOOST_CHECK (status.winner(grid, std::make_pair(1,1), ai_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,2), player_mark) == false);
-    BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == false);
+
+
+//    LOG4CXX_INFO(logger, "Chcecking Ai class...");
+//    Ai ai(pSettings, 3);
+//
+//    using namespace std;
+//
+//    vector <vector<string> >::iterator row;
+//    vector<string>::iterator column;
+//    for (row = grid.begin(); row != grid.end(); row++)
+//    {
+//        for (column = (*row).begin(); column != (*row).end(); column++)
+//        {
+//            cout << *column << ",";
+//        }
+//        cout << endl;
+//    }
+//    State state;
+//    state.grid = grid;
+//    state.player_to_move = player_mark;
+//    state.utility = 0;
+//
+//    State new_state = ai.move(state);
+//    PMove pmove = new_state.crucial_move;
+  //
+  //
+  //  grid_size = 3;
+  //  marks_to_win = 3;
+  //  LOG4CXX_INFO(logger, "Checking Status::winner()...");
+
+  //  grid = {{"X","X","X"}, 
+  //               {"" ,"", ""},
+  //               {"" ,"O", ""}};
+  //  BOOST_CHECK (status.draw(grid) == false);
+  //  BOOST_CHECK (status.winner(grid, player_mark) == true);
+  //  BOOST_CHECK (status.winner(grid, ai_mark) == false);
+
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,0), ai_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,2), player_mark) == true);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == true);
+
+
+  //  grid = {{"X","","X"}, 
+  //          {"" ,"X", ""},
+  //          {"O" ,"", "X"}};
+  //  BOOST_CHECK (status.draw(grid) == false);
+  //  BOOST_CHECK (status.winner(grid, player_mark) == true);
+  //  BOOST_CHECK (status.winner(grid, ai_mark) == false);
+
+
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,0), ai_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(2,2), player_mark) == true);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == true);
+
+  //  grid = {{"X","O","X"}, 
+  //          {"" ,"O", ""},
+  //          {"O" ,"O", "X"}};
+  //  BOOST_CHECK (status.draw(grid) == false);
+  //  BOOST_CHECK (status.winner(grid, player_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, ai_mark) == true);
+
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(1,1), ai_mark) == true);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == true);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,2), player_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == false);
+
+
+  //  grid = {{"X","X","O"}, 
+  //          {"O" ,"O", "X"},
+  //          {"X" ,"O", "O"}};
+  //  BOOST_CHECK (status.draw(grid) == true);
+  //  BOOST_CHECK (status.winner(grid, player_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, ai_mark) == false);
+
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(1,1), ai_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(2,1), ai_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,2), player_mark) == false);
+  //  BOOST_CHECK (status.winner(grid, std::make_pair(0,0), player_mark) == false);
    // for (Row row: status.getWinningDiagonals())
    // {
    //     for (Move move: row)
@@ -94,42 +150,42 @@ int test_main( int argc, char* argv[] )
    //     }
    // } 
    // BOOST_CHECK (status.winner(grid, player_mark) != true);
-
-
-    LOG4CXX_INFO(logger, "Chcecking Ai class...");
-    Ai ai(pSettings, 9);
-
-    using namespace std;
-    grid = {{"X","","O"}, 
-            {"X" ,"", "O"},
-            {"" ,"", ""}};
-    vector <vector<string> >::iterator row;
-    vector<string>::iterator column;
-    for (row = grid.begin(); row != grid.end(); row++)
-    {
-        for (column = (*row).begin(); column != (*row).end(); column++)
-        {
-            cout << *column << ",";
-        }
-        cout << endl;
-    }
-    State state;
-    state.grid = grid;
-    state.player_to_move = player_mark;
-    state.utility = 0;
-
-    State new_state = ai.move(state);
-    PMove pmove = new_state.crucial_move;
-    std::pair<int,int> move = (*pmove);
-    std::cout << "grid[2][0]: "<< grid[2][0] << std::endl;
-    std::cout << "grid[0][2]: "<< grid[0][2] << std::endl;
-    std::cout << "Last move: (" << move.first << ", " << move.second << ")"<< std::endl;
-
-
-    std::vector<Move> moves = ai.moves(grid);
-    for (Move move: moves){
-        std::cout << "move: (" << move.first << ", " << move.second << ")"<< std::endl;
-    }
+//
+//
+//    LOG4CXX_INFO(logger, "Chcecking Ai class...");
+//    Ai ai(pSettings, 9);
+//
+//    using namespace std;
+//    grid = {{"X","","O"}, 
+//            {"X" ,"", "O"},
+//            {"" ,"", ""}};
+//    vector <vector<string> >::iterator row;
+//    vector<string>::iterator column;
+//    for (row = grid.begin(); row != grid.end(); row++)
+//    {
+//        for (column = (*row).begin(); column != (*row).end(); column++)
+//        {
+//            cout << *column << ",";
+//        }
+//        cout << endl;
+//    }
+//    State state;
+//    state.grid = grid;
+//    state.player_to_move = player_mark;
+//    state.utility = 0;
+//
+//    State new_state = ai.move(state);
+//    PMove pmove = new_state.crucial_move;
+//    std::pair<int,int> move = (*pmove);
+//    std::cout << "grid[2][0]: "<< grid[2][0] << std::endl;
+//    std::cout << "grid[0][2]: "<< grid[0][2] << std::endl;
+//    std::cout << "Last move: (" << move.first << ", " << move.second << ")"<< std::endl;
+//
+//
+//    std::vector<Move> moves = ai.moves(grid);
+//    for (Move move: moves){
+//        std::cout << "move: (" << move.first << ", " << move.second << ")"<< std::endl;
+//    }
   
 //    Grid new_grid = ai.makeMove(grid, std::make_pair(2,0), "X");
 //    vector <vector<string> >::iterator row;

@@ -43,8 +43,8 @@ State Ai::move(const State& state)
 
 State Ai::negamax(const State& state, State alpha, State beta, int depth)
 {
-    Grid grid = state.grid;
-    std::string player = state.player_to_move;
+    const Grid& grid = state.grid;
+    const std::string& player = state.player_to_move;
 
     if (terminalState(state) || depth > max_depth)
     {
