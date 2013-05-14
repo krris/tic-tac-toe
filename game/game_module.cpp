@@ -50,7 +50,7 @@ BOOST_PYTHON_MODULE(game)
         .def(init<int>())
         .def(init<Grid, std::string, int>())
         .def(init<Grid, std::string, PMove, int>())
-        .def("get_last_move", &State::getLastMove)
+        .def("get_crucial_move", &State::getCrucialMove)
     ;
 
     class_<Ai>("Ai", init<boost::shared_ptr<Settings>, int>())

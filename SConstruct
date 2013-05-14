@@ -38,11 +38,11 @@ else:
 
 #build C++ library
 cpplib = env.SharedLibrary( target = 'game', 
-                source = ['calc/game_module.cpp', 'calc/settings.cpp', 'calc/status.cpp', 'calc/ai.cpp'])
+                source = ['game/game_module.cpp', 'game/settings.cpp', 'game/status.cpp', 'game/ai.cpp'])
 if(platform.system() == "Linux"):
    target = 'modules/game.so'
 elif(platform.system() == "Windows"):
-   target = 'app/modules/calc.pyd'
+   target = 'app/modules/game.pyd'
 env.Command(target, cpplib, copyLibBuilder )
 
 #build client application
