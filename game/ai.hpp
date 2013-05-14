@@ -29,7 +29,7 @@ struct State{
     State(Grid grid, std::string player_to_move,
           PMove crucial_move, int utility);
 
-    Move getCrucialMove();
+    Move getCrucialMove() const;
 
     Grid grid;
     std::string player_to_move;
@@ -41,15 +41,15 @@ struct State{
 class Ai{
 public:
     Ai(PSettings settings, int max_depth);
-    State move(State state);
+    State move(const State& state) const;
 
 private:
-    State negamax(State state, State alpha, State beta, int depth=0);
-    bool terminalState(State state);
-    int evaluate(Grid grid, std::string player);
-    std::vector<Move> moves(Grid grid);
-    Grid makeMove(Grid grid, Move move, std::string player);
-    std::string opponent(std::string player);
+    State negamax(const State& state, State alpha, State beta, int depth=0);
+    bool terminalState(const State& state) const;
+    int evaluate(const Grid& grid, const std::string& player) const;
+    std::vector<Move> moves(const Grid& grid) const;
+    Grid makeMove(const Grid& grid, const Move& move, const std::string& player) const;
+    std::string opponent(const std::string& player) const;
 
 
     PSettings settings;

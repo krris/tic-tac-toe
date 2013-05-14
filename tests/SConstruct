@@ -11,5 +11,5 @@ if(platform.system() == "Linux"):
 
    env.Append( LIBS = [ 'log4cxx' ] )
 
-   env.Program('test', ['test.cpp', '../calc/settings.cpp', '../calc/status.cpp', 
-                '../calc/ai.cpp'])
+   env.Program('test', ['test.cpp', '../game/settings.cpp', '../game/status.cpp', 
+                '../game/ai.cpp'])

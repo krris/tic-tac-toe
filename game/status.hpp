@@ -14,17 +14,17 @@ typedef std::vector<Move> Row;
 class Status{
 public:
     Status(PSettings settings);
-    bool draw(Grid grid);
-    bool winner(Grid grid, std::string player);
-    bool winner(Grid grid, Move move, std::string player);
+    bool draw(const Grid& grid) const;
+    bool winner(const Grid& grid, const std::string& player) const;
+    bool winner(const Grid& grid, const Move& move, const std::string& player) const;
 private:
     std::vector<Row> getWinningColumns();
     std::vector<Row> getWinningRows();
     std::vector<Row> getWinningDiagonals();
 
-    bool kInRow(Grid grid, Move move, std::string player,
-                int delta_x, int delta_y);
-    bool outOfGridRange(int x, int y);
+    bool kInRow(const Grid& grid, const Move& move, const std::string& player,
+                int delta_x, int delta_y) const;
+    bool outOfGridRange(int x, int y) const;
 
     PSettings settings;
     std::vector<Row> winning_combos;

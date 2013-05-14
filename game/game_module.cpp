@@ -36,8 +36,8 @@ BOOST_PYTHON_MODULE(game)
     ;
 
     // Member function pointers variables for handling overloade functions
-    bool (Status::*winner_ver1)(Grid, std::string) = &Status::winner;
-    bool (Status::*winner_ver2)(Grid, Move, std::string) = &Status::winner;
+    bool (Status::*winner_ver1)(const Grid&, const std::string&) const = &Status::winner;
+    bool (Status::*winner_ver2)(const Grid&, const Move&, const std::string&) const = &Status::winner;
 
     class_<Status>("Status", init<boost::shared_ptr<Settings> >())
         .def("draw", &Status::draw, args("grid"), "status::draw Docstring")

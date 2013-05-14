@@ -21,7 +21,7 @@ State::State(Grid grid, std::string player_to_move, PMove crucial_move, int util
     this->utility = utility;
 }
 
-Move State::getCrucialMove() 
+Move State::getCrucialMove() const
 { 
     return *crucial_move; 
 }
@@ -33,7 +33,7 @@ Ai::Ai(PSettings settings, int max_depth)
     this->status = new Status(settings);
 }
 
-State Ai::move(State state)
+State Ai::move(const State& state) const
 {
     int infinity = std::numeric_limits<int>::max();
     State alpha(-infinity);
@@ -41,7 +41,7 @@ State Ai::move(State state)
     return negamax(state, alpha, beta);
 }
 
-State Ai::negamax(State state, State alpha, State beta, int depth)
+State Ai::negamax(const State& state, State alpha, State beta, int depth)
 {
     Grid grid = state.grid;
     std::string player = state.player_to_move;
@@ -58,9 +58,7 @@ State Ai::negamax(State state, State alpha, State beta, int depth)
 
     for (Move move: moves(grid))
     {
-        // deepcopy
-        Grid grid_copy = grid;
-        grid_copy = makeMove(grid_copy, move, player);
+        Grid grid_copy = makeMove(grid, move, player);
 
         PMove new_state_move;
         if (state.crucial_move == nullptr)
@@ -91,7 +89,7 @@ State Ai::negamax(State state, State alpha, State beta, int depth)
     return maximum;
 }
 
-bool Ai::terminalState(State state)
+bool Ai::terminalState(const State& state) const
 {
     std::string player = state.player_to_move;
     if (status->winner(state.grid, player) ||
@@ -101,7 +99,7 @@ bool Ai::terminalState(State state)
     return false;
 }
 
-int Ai::evaluate(Grid grid, std::string player)
+int Ai::evaluate(const Grid& grid, const std::string& player) const
 {
     bool isHumanWon = status->winner(grid, settings->getPlayerMark());
     bool isAiWon = status->winner(grid, settings->getAiMark());
@@ -126,7 +124,7 @@ int Ai::evaluate(Grid grid, std::string player)
     
 }
 
-std::vector<Move> Ai::moves(Grid grid)
+std::vector<Move> Ai::moves(const Grid& grid) const
 {
     int width = settings->getGridWidth();
     int height = settings->getGridHeight();
@@ -142,16 +140,18 @@ std::vector<Move> Ai::moves(Grid grid)
     return moves;
 }
 
-Grid Ai::makeMove(Grid grid, Move move, std::string player)
+Grid Ai::makeMove(const Grid& grid, const Move& move, const std::string& player) const
 {
+    // deepcopy
+    Grid grid_copy(grid);
     int y = move.first;
     int x = move.second;
-    grid[y][x] = player;
-    return grid;
+    grid_copy[y][x] = player;
+    return grid_copy;
 
 }
 
-std::string Ai::opponent(std::string player)
+std::string Ai::opponent(const std::string& player) const
 {
     if (player == settings->getPlayerMark())
         return settings->getAiMark();

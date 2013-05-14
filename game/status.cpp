@@ -17,23 +17,20 @@ Status::Status(PSettings settings)
                                 winning_diagonals.begin(), winning_diagonals.end());
 }
 
-bool Status::draw(Grid grid)
+bool Status::draw(const Grid& grid) const
 {
-    using namespace std;
-    Grid::iterator row;
-    vector<string>::iterator column;
-    for (row = grid.begin(); row != grid.end(); row++)
+    for (std::vector<std::string> row: grid)
     {
-        for (column = (*row).begin(); column != (*row).end(); column++)
+        for (std::string column: row)
         {
-            if ((*column).empty())
+            if (column.empty())
                 return false;
         }
     }
     return true;
 }
 
-bool Status::winner(Grid grid, std::string player)
+bool Status::winner(const Grid& grid, const std::string& player) const
 {
     for (Row row: winning_combos)
     {
@@ -51,7 +48,7 @@ bool Status::winner(Grid grid, std::string player)
     return false;
 }
 
-bool Status::winner(Grid grid, Move move, std::string player) 
+bool Status::winner(const Grid& grid, const Move& move, const std::string& player) const 
 {
     if (kInRow(grid, move, player, 0, 1) ||
         kInRow(grid, move, player, 1, 0) ||
@@ -63,7 +60,8 @@ bool Status::winner(Grid grid, Move move, std::string player)
 }
 
 
-bool Status::kInRow(Grid grid, Move move, std::string player, int delta_x, int delta_y)
+bool Status::kInRow(const Grid& grid, const Move& move, const std::string& player,
+                    int delta_x, int delta_y) const
 {
     int x = move.first;
     int y = move.second;
@@ -103,7 +101,7 @@ bool Status::kInRow(Grid grid, Move move, std::string player, int delta_x, int d
 
 }
 
-bool Status::outOfGridRange(int x, int y)
+bool Status::outOfGridRange(int x, int y) const
 {
     if (x < 0 || y < 0)
         return true;

@@ -4,9 +4,9 @@
 
 #define private public
 
-#include "../calc/settings.hpp"
-#include "../calc/status.hpp"
-#include "../calc/ai.hpp"
+#include "../game/settings.hpp"
+#include "../game/status.hpp"
+#include "../game/ai.hpp"
 
 using namespace log4cxx;
 LoggerPtr logger(Logger::getRootLogger());
@@ -119,7 +119,7 @@ int test_main( int argc, char* argv[] )
     state.utility = 0;
 
     State new_state = ai.move(state);
-    PMove pmove = new_state.last_move;
+    PMove pmove = new_state.crucial_move;
     std::pair<int,int> move = (*pmove);
     std::cout << "grid[2][0]: "<< grid[2][0] << std::endl;
     std::cout << "grid[0][2]: "<< grid[0][2] << std::endl;
@@ -130,7 +130,7 @@ int test_main( int argc, char* argv[] )
     for (Move move: moves){
         std::cout << "move: (" << move.first << ", " << move.second << ")"<< std::endl;
     }
-    
+  
 //    Grid new_grid = ai.makeMove(grid, std::make_pair(2,0), "X");
 //    vector <vector<string> >::iterator row;
 //    vector<string>::iterator column;
@@ -144,7 +144,7 @@ int test_main( int argc, char* argv[] )
 //    }
 
 
-    //BOOST_CHECK ( *(ai.move(state).last_move) == std::make_pair(2,0));
+    //BOOST_CHECK ( *(ai.move(state).crucial_move) == std::make_pair(2,0));
 
 
     return 0;
