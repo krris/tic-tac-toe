@@ -41,7 +41,7 @@ struct State{
 class Ai{
 public:
     Ai(PSettings settings, int max_depth);
-    State move(const State& state) const;
+    State move(const State& state);
 
 private:
     State negamax(const State& state, State alpha, State beta, int depth=0);

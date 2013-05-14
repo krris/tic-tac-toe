@@ -33,7 +33,7 @@ Ai::Ai(PSettings settings, int max_depth)
     this->status = new Status(settings);
 }
 
-State Ai::move(const State& state) const
+State Ai::move(const State& state) 
 {
     int infinity = std::numeric_limits<int>::max();
     State alpha(-infinity);

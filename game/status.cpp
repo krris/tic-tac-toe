@@ -166,16 +166,17 @@ std::vector<Row> Status::getWinningDiagonals()
     {
         for (int y = 0; y < (height - marks_to_win + 1); ++y)
         {
-            Row diagonal;
+            Row descending_diag;
             for (int i = 0; i < marks_to_win; ++i)
             {
-                diagonal.push_back( std::make_pair(y + i, x + i));
+                descending_diag.push_back( std::make_pair(y + i, x + i));
             }
-            diagonals.push_back(diagonal);
+            diagonals.push_back(descending_diag);
         }
     }
 
-    for (int x = width - 1; x > width - marks_to_win + 1; --x)
+    int i = 0;
+    for (int x = width - 1; i < width - marks_to_win + 1; --x, ++i)
     {
         for (int y = 0; y < (height - marks_to_win + 1); ++y)
         {
