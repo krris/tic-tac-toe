@@ -39,7 +39,7 @@ BOOST_PYTHON_MODULE(game)
     bool (Status::*winner_ver1)(const Grid&, const std::string&) const = &Status::winner;
     bool (Status::*winner_ver2)(const Grid&, const Move&, const std::string&) const = &Status::winner;
 
-    class_<Status>("Status", init<boost::shared_ptr<Settings> >())
+    class_<Status>("Status", init<>())
         .def("draw", &Status::draw, args("grid"), "status::draw Docstring")
         .def("winner", winner_ver1)
         .def("winner", winner_ver2) 
@@ -53,7 +53,7 @@ BOOST_PYTHON_MODULE(game)
         .def("get_crucial_move", &State::getCrucialMove)
     ;
 
-    class_<Ai>("Ai", init<boost::shared_ptr<Settings>, int>())
+    class_<Ai>("Ai", init<int>())
         .def("move", &Ai::move, args("state"), "Doscstring")
     ;
         

@@ -13,7 +13,7 @@ typedef std::vector<Move> Row;
 
 class Status{
 public:
-    Status(PSettings settings);
+    Status();
     /**
      * Check if there is a draw.
      */

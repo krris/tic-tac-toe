@@ -43,7 +43,7 @@ struct State{
  */
 class Ai{
 public:
-    Ai(PSettings settings, int max_depth);
+    Ai(int max_depth);
     /**
      * Make a move on the base of passed state.
      * @param state

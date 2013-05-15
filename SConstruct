@@ -1,9 +1,6 @@
 # R. Nowak, 2010-03-13   -*- mode: Python; -*-
 import os, shutil, platform, re
-
 import SCons.Builder
-
-#mxmlBuilder = SCons.Builder.Builder( action = 'mxmlc $SOURCE -output $TARGET' )
 
 def copyLibBuilder( target, source, env):
    '''kopiuje biblioteke'''
@@ -14,7 +11,6 @@ env = Environment()
 
 #sciezki
 env.Append( ENV = {'PATH' : os.environ['PATH'] })
-#env.Append( BUILDERS = {'BuildMXML': mxmlBuilder} )
 
 if(platform.system() == "Linux"):
    
@@ -44,9 +40,3 @@ if(platform.system() == "Linux"):
 elif(platform.system() == "Windows"):
    target = 'app/modules/game.pyd'
 env.Command(target, cpplib, copyLibBuilder )
-
-#build client application
-#env.Install('app/static', 'client/deploy/client.html')
-#env.Install('app/static','client/deploy/AC_OETags.js')
-#client_program = env.BuildMXML( target = 'app/static/client.swf', source = 'client/src/client.mxml' )
-#env.Depends( client_program, [ 'client/src/client.mxml' ] )

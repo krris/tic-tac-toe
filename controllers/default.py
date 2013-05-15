@@ -41,7 +41,7 @@ def move():
     game_settings.initialize(settings.grid_size, settings.grid_size, settings.marks_to_win,
                             settings.player_mark, settings.ai_mark)
 
-    game_stat = game.Status(game_settings)
+    game_stat = game.Status()
     
     if(request.post_vars.i == None or request.post_vars.j == None or session.game_finished):
         return False
@@ -70,7 +70,7 @@ def move():
     else:
         # Make AI move
         state = game.State(convert(copy.deepcopy(grid)), settings.ai_mark, 0)
-        ai = game.Ai(game_settings, settings.max_depth)
+        ai = game.Ai(settings.max_depth)
         new_state = ai.move(state)
 
         new_move = new_state.get_crucial_move()

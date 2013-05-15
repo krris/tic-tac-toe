@@ -1,8 +1,9 @@
 #include "status.hpp"
 
-Status::Status(PSettings settings)
+Status::Status()
 {
-    this->settings = settings;
+    //this->settings = settings;
+    this->settings = Settings::getInstance();
     std::vector<Row> winning_columns = getWinningColumns();
     std::vector<Row> winning_rows = getWinningRows();
     std::vector<Row> winning_diagonals = getWinningDiagonals();

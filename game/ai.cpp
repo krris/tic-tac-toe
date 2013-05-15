@@ -26,11 +26,11 @@ Move State::getCrucialMove() const
     return *crucial_move; 
 }
 
-Ai::Ai(PSettings settings, int max_depth)
+Ai::Ai(int max_depth)
 {
-    this->settings = settings;
+    this->settings = Settings::getInstance();
     this->max_depth = max_depth;
-    this->status = new Status(settings);
+    this->status = new Status();
 }
 
 State Ai::move(const State& state) 
