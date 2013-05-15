@@ -10,10 +10,15 @@ def download(): return response.download(request,db)
 def call(): return service()
 ### end requires
 
+## @package maincontroller
+#  Default and only controller for whole application
+
+## Main and default method
+#  
+#  Creating / loading game grid then return view with specified params
 def index():   
     if(session.game_grid == None):
-        # Information about state of the game
-        # Create grid and save
+        # Create game grid and save to session
         grid = [['' for row in range(settings.grid_size)] for col in range(settings.grid_size)]
         session.game_grid = grid
         session.game_finished = False
@@ -34,34 +39,44 @@ def index():
     )
     
     return view_data
-
+    
+## Method called from ajax
+#
+#  Responsible for saving player move to session,
+#  getting AI move and checking if the game should be finished
 def move():
 
-    game_settings = game.Settings.get_instance()
-    game_settings.initialize(settings.grid_size, settings.grid_size, settings.marks_to_win,
-                            settings.player_mark, settings.ai_mark)
-
-    game_stat = game.Status()
-    
+    # Check if it's valid request
     if(request.post_vars.i == None or request.post_vars.j == None or session.game_finished):
         return False
-        
+    
+    # Get player move coordinates and game grid       
     i = int(request.post_vars.i)
     j = int(request.post_vars.j)
     grid = session.game_grid
     
     if(i >= settings.grid_size or j >= settings.grid_size or i < 0 or j < 0 or grid[i][j] != ''):
         return False
+        
+    # Create and initialize C++ settings class
+    game_settings = game.Settings.get_instance()
+    game_settings.initialize(settings.grid_size, settings.grid_size, settings.marks_to_win,
+                            settings.player_mark, settings.ai_mark)
+
+    game_stat = game.Status()
     
+    # Save player move
     grid[i][j] = settings.player_mark
     last_player_move = (i,j)
+    
+    # Default value, so we won't need to change it in every condition statement
     session.game_finished = True
 
     player_move = game.IntPair()
     player_move.first = i
     player_move.second = j
     
-    [x, y] = [-1, -1] # Default values in case AI will not make move
+    [x, y] = [-1, -1] # Default values in case AI will not make a move
     
     if game_stat.winner(convert(grid), player_move, settings.player_mark):        
         status = 'player_won'
@@ -91,7 +106,8 @@ def move():
         
     session.game_grid = grid
     return json.dumps({'x':x, 'y':y, 'status':status})     
-    
+
+## Reset game grid        
 def reset():
     session.game_grid = None
     session.game_finished = False
