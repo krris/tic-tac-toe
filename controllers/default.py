@@ -1,21 +1,23 @@
+## @file
+# Default and only controller for whole application
+
 # -*- coding: utf-8 -*-
 import json
 import random
 import copy
 import game 
 
-### required - do no delete
+## web2py function
 def user(): return dict(form=auth())
+## web2py function
 def download(): return response.download(request,db)
+## web2py function
 def call(): return service()
-### end requires
 
-## @package maincontroller
-#  Default and only controller for whole application
-
-## Main and default method
-#  
-#  Creating / loading game grid then return view with specified params
+## Main and default method for this controller
+#
+#  Create / load game grid 
+#  then return view with specified params
 def index():   
     if(session.game_grid == None):
         # Create game grid and save to session

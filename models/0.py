@@ -1,3 +1,6 @@
+## @file 0.py
+# Config file
+# - stores all configuration variables as a memebers of Storage class
 from gluon.storage import Storage
 settings = Storage()
 
