@@ -2,12 +2,10 @@
 #define AI_HPP
 
 #include <limits>
-#include <boost/smart_ptr.hpp>
 
+#include "forward_declarations.h"
 #include "settings.hpp"
 #include "status.hpp"
-
-typedef boost::shared_ptr<Move> PMove;
 
 /**
  * Holds information about a state of the game.

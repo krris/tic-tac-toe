@@ -2,14 +2,10 @@
 #define STATUS_HPP
 
 #include <string>
-#include <boost/smart_ptr.hpp>
-#include <string>
 
+#include "forward_declarations.h"
 #include "settings.hpp"
 
-typedef std::vector<std::vector<std::string> > Grid;
-typedef std::pair<int, int> Move;
-typedef std::vector<Move> Row;
 
 class Status{
 public:

@@ -2,10 +2,8 @@
 #define SETTINGS_HPP
 
 #include <string>
-#include <boost/smart_ptr.hpp>
 
-class Settings;
-typedef boost::shared_ptr<Settings> PSettings;
+#include "forward_declarations.h"
 
 /**
  * Holds the settings of a current game.
