@@ -1,6 +1,6 @@
 TicTacToe game for a web browser.
 
-Using:
+Using: 
 - web2py
 - boost::python
 - javascript
