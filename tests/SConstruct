@@ -1,15 +1,24 @@
 import os, shutil, platform
 
 env = Environment()
-#env.Append( ENV = {'PATH' : os.environ['PATH'] })
+env.Append( ENV = {'PATH' : os.environ['PATH'] })
 
 
 if(platform.system() == "Linux"):
-   
-   env.Append( CPPFLAGS = '-g -Wall -pedantic -std=c++0x' )
-   env.Append( LINKFLAGS = '-Wall ' )
+    env.Append( CPPFLAGS = '-g -Wall -pedantic -std=c++0x' )
+    env.Append( LINKFLAGS = '-Wall ' )
+    env.Append( LIBS = [ 'log4cxx' ] )
 
-   env.Append( LIBS = [ 'log4cxx' ] )
+elif(platform.system() == "Windows"):
+   env.Append( CPPPATH = [ Dir('C:/Boost/include/boost-1_52'), #tutaj zainstalowane naglowki boost
+                           Dir('C:/Python27/include') ] ) #tutaj zaistalowane naglowki python
+   env.Append( LIBPATH = [ Dir('C:/Boost/lib'), #tutaj sciezka do bibliotek boost
+                           Dir('C:/Python27/libs') ] ) #tutaj sciezki do bibliotek python
 
-   env.Program('test', ['test.cpp', '../game/settings.cpp', '../game/status.cpp', 
-                '../game/ai.cpp'])
+   env.Append( CPPFLAGS = ' /EHsc /MD /D "WIN32" /D "_CONSOLE" /W4' )
+   env.Append( LINKFLAGS = ' /SUBSYSTEM:WINDOWS ' )
+else:
+   print platform.system() + " not supported"
+
+env.Program('test', ['test.cpp', '../game/settings.cpp', '../game/status.cpp', 
+            '../game/ai.cpp'])

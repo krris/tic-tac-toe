@@ -20,9 +20,9 @@ settings.email_login = ''
 settings.login_method = 'local'
 settings.login_config = ''
 settings.plugins = ['jqgrid']
-settings.grid_size = 3
-settings.marks_to_win = 3
-settings.max_depth = 9
+settings.grid_size = 8
+settings.marks_to_win = 4
+settings.max_depth = 3
 settings.player_mark = 'X'
 settings.ai_mark = 'O'
 

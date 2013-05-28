@@ -38,5 +38,5 @@ cpplib = env.SharedLibrary( target = 'game',
 if(platform.system() == "Linux"):
    target = 'modules/game.so'
 elif(platform.system() == "Windows"):
-   target = 'app/modules/game.pyd'
+   target = 'modules/game.pyd'
 env.Command(target, cpplib, copyLibBuilder )
